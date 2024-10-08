@@ -1,20 +1,18 @@
-﻿namespace Server.Models
+﻿namespace Server.Models;
+
+public class Permission
 {
-    public class Permission
+    public int FloorLevel { get; set; }
+    public string Building { get; set; }
+
+    public Permission(int floorLevel, string building)
     {
-        public int FloorLevel { get; set; }
-        public string Building { get; set; }
-
-        public Permission(int floorLevel, string building)
-        {
-            FloorLevel = floorLevel;
-            Building = building;
-        }
-
-        public override string ToString()
-        {
-            return $"Levels: {FloorLevel}, Buildings: {Building}";
-        }
+        FloorLevel = floorLevel;
+        Building = building;
     }
 
+    public override string ToString()
+    {
+        return $"Levels: {FloorLevel}, Buildings: {Building}";
+    }
 }
