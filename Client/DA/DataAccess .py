@@ -1,8 +1,8 @@
 import requests
 
 class DataAccess:
-    def __init__(self, base_url):
-        self.base_url = base_url
+    def __init__(self):
+        base_url = base_url
 
     # Create (POST)
     def create(self, endpoint, data):
