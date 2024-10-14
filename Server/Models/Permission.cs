@@ -1,7 +1,11 @@
-﻿namespace Server.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Server.Models;
 
 public class Permission
 {
+    [Key]
+    public int Id { get; set; }
     public int FloorLevel { get; set; }
     public string Building { get; set; }
 

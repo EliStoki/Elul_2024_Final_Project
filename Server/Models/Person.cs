@@ -1,13 +1,18 @@
-﻿namespace Server.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Server.Models;
 
 public class Person
 {
+    [Key]
+    public int Id { get; set; }
     public string Name { get; set; }
     public int Age { get; set; }
     public string Address { get; set; }
 
-    public Person(string name, int age, string address)
+    public Person(int id, string name, int age, string address)
     {
+        Id = id;
         Name = name;
         Age = age;
         Address = address;
