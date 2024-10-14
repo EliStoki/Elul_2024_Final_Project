@@ -68,14 +68,14 @@ public class PersonDA
 
     public async Task<int> UpdatePersonAsync(Person person)
     {
-        string query = $"UPDATE Persons SET Name = '{person.Name}', Age = {person.Age} WHERE Id = {person.Id}";
+        string query = $"UPDATE Person SET Name = '{person.Name}', Age = {person.Age} WHERE person_Id = {person.Id}";
         DataTable result = await _databaseService.ExecuteQueryAsync(query);
         return result.Rows.Count;
     }
 
     public async Task<int> DeletePersonAsync(int id)
     {
-        string query = $"DELETE FROM Persons WHERE Id = {id}";
+        string query = $"DELETE FROM Person WHERE person_Id = {id}";
         DataTable result = await _databaseService.ExecuteQueryAsync(query);
         return result.Rows.Count;
     }
