@@ -68,4 +68,30 @@ public class DataBaseService
 
         return dataTable;
     }
+
+    public async Task<int> ExecuteNonQueryAsync(string query)
+    {
+        int affectedRows = 0;
+
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    affectedRows = await command.ExecuteNonQueryAsync();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions as necessary
+            Console.WriteLine($"An error occurred: {ex.Message}");
+        }
+
+        return affectedRows;
+    }
+
 }

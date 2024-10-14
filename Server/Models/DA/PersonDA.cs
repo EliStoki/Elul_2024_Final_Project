@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using System.Data;
 
 namespace Server.Models.DA;
 
@@ -68,15 +69,16 @@ public class PersonDA
 
     public async Task<int> UpdatePersonAsync(Person person)
     {
-        string query = $"UPDATE Person SET Name = '{person.Name}', Age = {person.Age} WHERE person_Id = {person.Id}";
-        DataTable result = await _databaseService.ExecuteQueryAsync(query);
-        return result.Rows.Count;
+        string query = $"UPDATE Person SET Name = '{person.Name}', Age = {person.Age}, Address = '{person.Address}' WHERE person_Id = {person.Id}";
+        int affectedRows = await _databaseService.ExecuteNonQueryAsync(query);
+        return affectedRows;
     }
 
     public async Task<int> DeletePersonAsync(int id)
     {
         string query = $"DELETE FROM Person WHERE person_Id = {id}";
-        DataTable result = await _databaseService.ExecuteQueryAsync(query);
-        return result.Rows.Count;
+        int affectedRows = await _databaseService.ExecuteNonQueryAsync(query);
+        return affectedRows;
     }
+
 }
