@@ -8,6 +8,9 @@ public class Department
     public int Id { get; set; }
     public string DeptName { get; set; }
 
+    // Parameterless constructor needed for deserialization
+    public Department() { }
+
     public Department(int deptId, string deptName)
     {
         Id = deptId;
