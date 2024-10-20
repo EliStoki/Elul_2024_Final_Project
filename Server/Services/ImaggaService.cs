@@ -1,47 +1,76 @@
 ﻿using System.Net.Http.Headers;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RestSharp;
 
 namespace Server.Services;
 
+public class Coordinates
+{
+    public int Height { get; set; }
+    public int Width { get; set; }
+    public int Xmax { get; set; }
+    public int Xmin { get; set; }
+    public int Ymax { get; set; }
+    public int Ymin { get; set; }
+}
+
 public class ImaggaService
 {
+    string apiKey = "acc_1e99b464650d238";
+    string apiSecret = "0a3303b80de04c1a955fe5240e217087";
+    RestClient client = new RestClient("https://api.imagga.com/v2/faces/detections");
+
     private readonly HttpClient _httpClient;
-    private const string BaseUrl = "https://api.imagga.com/v2/face/detect";
+    private const string BaseUrl = "https://api.imagga.com/v2/faces/detections";
 
     public ImaggaService()
     {
         _httpClient = new HttpClient();
     }
 
-    public async Task<string> GetSingleFaceImageAsync(string imageUrl)
+    public async Task<string> GetFaceDetectionCropImage(string userName = "userName")
     {
-        // Set the necessary headers
-        var request = new HttpRequestMessage(HttpMethod.Get, $"{BaseUrl}?url={imageUrl}");
-        var authToken = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes("YOUR_API_KEY:YOUR_API_SECRET"));
-        request.Headers.Authorization = new AuthenticationHeaderValue("Basic", authToken);
+        string basicAuthValue = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{apiKey}:{apiSecret}"));
 
-        // Send the request
-        HttpResponseMessage response = await _httpClient.SendAsync(request);
-        if (response.IsSuccessStatusCode)
-        {
-            var responseContent = await response.Content.ReadAsStringAsync();
+        string imageUrl = "https://imagga.com/static/images/categorization/child-476506_640.jpg";
 
-            // Parse the response content to get the face image URL
-            var json = JObject.Parse(responseContent);
-            var faceImages = json["result"]["faces"];
+        // Create request
+        var request = new RestRequest();
+        request.Method = Method.Get;
+        request.AddParameter("image_url", imageUrl);
+        request.AddHeader("Authorization", String.Format("Basic {0}", basicAuthValue));
 
-            if (faceImages != null && faceImages.HasValues)
+        // Set timeout to 6 seconds
+        request.Timeout = TimeSpan.FromSeconds(6);
+
+        // Execute request asynchronously
+        RestResponse response = await client.ExecuteAsync(request);
+
+        if(response.IsSuccessful)
             {
-                // Assuming we want the first detected face image
-                string faceImageUrl = faceImages[0]["face_image_url"].ToString();
-                return faceImageUrl;
+            // Deserialize the response content to extract face data
+            var json = JObject.Parse(response.Content);
+            var faces = json["result"]["faces"];
+
+            if (faces != null && faces.HasValues)
+            {
+                // Extract coordinates and confidence from the first detected face - get the first face in image
+                var face = faces[0];
+                var coordinates = face["coordinates"].ToObject<Coordinates>();
+                var confidence = face["confidence"].ToObject<double>();
+
+                //Crop image based on face detection
+                string imagePath = await ImageCropper.CropImageFromUrl(imageUrl, coordinates.Xmin, coordinates.Ymin, coordinates.Width, coordinates.Height, userName);
+                return imagePath;
+                //return the image as Json
+                //return Convert.ToBase64String(File.ReadAllBytes(imagePath));
             }
             else
             {
                 throw new Exception("No face detected in the image.");
             }
         }
-
-        throw new Exception($"Imagga API error: {response.ReasonPhrase}");
+        throw new Exception("Not Permitted");
     }
 }
