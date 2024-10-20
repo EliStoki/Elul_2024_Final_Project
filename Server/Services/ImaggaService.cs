@@ -29,11 +29,11 @@ public class ImaggaService
         _httpClient = new HttpClient();
     }
 
-    public async Task<string> GetFaceDetectionCropImage(string userName = "userName")
+    public async Task<string> GetFaceDetectionCropImage(string imageUrl, string userName = "userName")
     {
         string basicAuthValue = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{apiKey}:{apiSecret}"));
 
-        string imageUrl = "https://imagga.com/static/images/categorization/child-476506_640.jpg";
+        //string imageUrl = "https://imagga.com/static/images/categorization/child-476506_640.jpg";
 
         // Create request
         var request = new RestRequest();
