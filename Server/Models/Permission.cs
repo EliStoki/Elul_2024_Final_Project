@@ -9,8 +9,9 @@ public class Permission
     public int FloorLevel { get; set; }
     public string Building { get; set; }
 
-    public Permission(int floorLevel, string building)
+    public Permission(int id, int floorLevel, string building)
     {
+        Id = id;
         FloorLevel = floorLevel;
         Building = building;
     }
