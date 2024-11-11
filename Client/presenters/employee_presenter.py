@@ -1,16 +1,19 @@
 from models.employee import Employee
 from models.department import Department
+from presenters.main_window_presenter import MainWindowPresenter
 
 class EmployeePresenter:
-    def __init__(self, model, list_view, add_edit_view):
+    def __init__(self, model, list_view, add_edit_view, main_window_presenter : MainWindowPresenter):
         self.model = model
         self.list_view = list_view
         self.add_edit_view = add_edit_view
-        
+        self.main_window_presenter = main_window_presenter
+        self.main_window_presenter.add_panel(self.add_edit_view)
+
         # Set presenter for views
         self.list_view.set_presenter(self)
         self.add_edit_view.set_presenter(self)
-        
+
         # Load initial data
         self.load_data()
 
@@ -28,15 +31,16 @@ class EmployeePresenter:
             self.add_edit_view.name_input.clear()
             self.add_edit_view.position_input.clear()
             self.add_edit_view.dept_input.clear()
-        self.add_edit_view.show()
+        self.main_window_presenter.load_panel(self.add_edit_view)
 
     def save_employee(self, name, position, dept_name):
         department = Department(dept_name, dept_id=None)  # Mock department
         employee = Employee(name, age=None, address=None, employee_id=None, position=position, department=department, image_url=None, permission=None)
         self.model.append(employee)
         self.load_data()
-        self.add_edit_view.hide()
-
+        self.main_window_presenter.load_panel(self.list_view)
+    
     def delete_employee(self, employee):
         self.model.remove(employee)
         self.load_data()
+

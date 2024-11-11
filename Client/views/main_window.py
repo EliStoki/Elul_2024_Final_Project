@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QMainWindow, QListWidget, QStackedWidget, QHBoxLayout, QWidget, QListWidgetItem
+from presenters.main_window_presenter import MainWindowPresenter
 
 # Main application window managing different model panels.
 class MainWindow(QMainWindow):
@@ -29,8 +30,8 @@ class MainWindow(QMainWindow):
         # Connect selection change in sidebar to a method to switch views.
         self.sidebar.currentItemChanged.connect(self.load_selected_panel)
         
-    def set_presenter(self, presenter):
+    def set_presenter(self, presenter : MainWindowPresenter):
         self.presenter = presenter
 
     def load_selected_panel(self, current):
-        self.presenter.load_panel(current)
+        self.presenter.load_selected_panel(current)

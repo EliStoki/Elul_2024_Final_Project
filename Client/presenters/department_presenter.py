@@ -1,11 +1,13 @@
 from models.department import Department
+from presenters.main_window_presenter import MainWindowPresenter
 
 class DepartmentPresenter:
-    def __init__(self, model, list_view, add_edit_view):
+    def __init__(self, model, list_view, add_edit_view, main_window_presenter : MainWindowPresenter):
         self.model = model
         self.list_view = list_view
         self.add_edit_view = add_edit_view
-        
+        self.main_window_presenter = main_window_presenter
+
         # Set presenter for views
         self.list_view.set_presenter(self)
         self.add_edit_view.set_presenter(self)
@@ -25,13 +27,14 @@ class DepartmentPresenter:
         else:
             self.add_edit_view.dept_name_input.clear()
             self.add_edit_view.dept_id_input.clear()
-        self.add_edit_view.show()
+        
+        self.main_window_presenter.load_panel(self.add_edit_view)
 
     def save_department(self, dept_name, dept_id):
         department = Department(dept_name, dept_id)
         self.model.append(department)
         self.load_data()
-        self.add_edit_view.hide()
+        self.main_window_presenter.load_panel(self.list_view)
 
     def delete_department(self, department):
         self.model.remove(department)
