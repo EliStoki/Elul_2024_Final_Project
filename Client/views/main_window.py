@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QMainWindow, QListWidget, QStackedWidget, QVBoxLayout, QWidget, QListWidgetItem
+from PySide6.QtWidgets import QMainWindow, QListWidget, QStackedWidget, QHBoxLayout, QWidget, QListWidgetItem
 
 # Main application window managing different model panels.
 class MainWindow(QMainWindow):
@@ -17,7 +17,7 @@ class MainWindow(QMainWindow):
         self.main_area = QStackedWidget()
         
         # Set up layout for the main window.
-        layout = QVBoxLayout()
+        layout = QHBoxLayout()
         layout.addWidget(self.sidebar)
         layout.addWidget(self.main_area)
         
@@ -29,11 +29,8 @@ class MainWindow(QMainWindow):
         # Connect selection change in sidebar to a method to switch views.
         self.sidebar.currentItemChanged.connect(self.load_selected_panel)
         
-    def load_selected_panel(self, current, previous):
-        """
-        Loads the panel corresponding to the selected model in the sidebar.
-        :param current: Currently selected QListWidgetItem
-        :param previous: Previously selected QListWidgetItem
-        """
-        index = self.sidebar.row(current)
-        self.main_area.setCurrentIndex(index)
+    def set_presenter(self, presenter):
+        self.presenter = presenter
+
+    def load_selected_panel(self, current):
+        self.presenter.load_panel(current)

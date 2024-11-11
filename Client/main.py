@@ -13,10 +13,7 @@ from presenters.person_presenter import PersonPresenter
 from presenters.employee_presenter import EmployeePresenter
 from presenters.department_presenter import DepartmentPresenter
 from presenters.permission_presenter import PermissionPresenter
-from models.person import Person
-from models.employee import Employee
-from models.department import Department
-from models.permission import Permission
+from presenters.main_window_presenter import MainWindowPresenter
 
 def main():
     # Create the application instance
@@ -51,14 +48,18 @@ def main():
     permission_add_edit_view = PermissionAddEditPanel()
     permission_presenter = PermissionPresenter(permission_model, permission_list_view, permission_add_edit_view)
     
+    # Initialize main window presenter
+    main_window_presenter = MainWindowPresenter(main_window)
+
+
     # Add views to the main window's main area stack
-    main_window.main_area.addWidget(person_list_view)
-    main_window.main_area.addWidget(employee_list_view)
-    main_window.main_area.addWidget(department_list_view)
-    main_window.main_area.addWidget(permission_list_view)
+    main_window_presenter.add_panel(person_list_view)
+    main_window_presenter.add_panel(employee_list_view)
+    main_window_presenter.add_panel(department_list_view)
+    main_window_presenter.add_panel(permission_list_view)
     
     # Show the main window
-    main_window.show()
+    main_window_presenter.run()
     
     # Run the application event loop
     sys.exit(app.exec())
