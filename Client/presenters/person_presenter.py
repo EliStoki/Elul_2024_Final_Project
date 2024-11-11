@@ -30,7 +30,14 @@ class PersonPresenter:
         self.add_edit_view.show()
 
     def save_person(self, name, age, address):
-        person = Person(name=name, age=int(age), address=address)
+        try:
+            person = Person(name=name, age=int(age), address=address)
+        except ValueError as e:
+            print(f"Error converting age to integer: {e}")
+            return
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return
         self.model.append(person)
         self.load_data()
         self.add_edit_view.hide()
