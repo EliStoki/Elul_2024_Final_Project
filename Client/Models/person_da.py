@@ -19,7 +19,7 @@ class PersonDA:
 
     def update(self, person : Person):
         data = person.__dict__
-        return self.api.update("person", person.person_id, data)
+        return self.api.update("person", person.id, data)
 
     def delete(self, person : Person):
-        return self.api.delete("person", person.person_id)
+        return self.api.delete("person", person.id)

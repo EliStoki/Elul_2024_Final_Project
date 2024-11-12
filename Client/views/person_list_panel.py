@@ -41,7 +41,7 @@ class PersonListPanel(QWidget):
         self.table.setRowHeight(row_position, 40)
 
         # Insert each attribute into its respective column
-        self.table.setItem(row_position, 0, QTableWidgetItem(str(person.person_id)))
+        self.table.setItem(row_position, 0, QTableWidgetItem(str(person.id)))
         self.table.setItem(row_position, 1, QTableWidgetItem(person.name))
         self.table.setItem(row_position, 2, QTableWidgetItem(str(person.age)))
         self.table.setItem(row_position, 3, QTableWidgetItem(person.address))
@@ -59,8 +59,8 @@ class PersonListPanel(QWidget):
         delete_button.setFixedSize(delete_button.sizeHint())
 
         # Connect the buttons to the presenter (Pass row index and person_id as data)
-        edit_button.clicked.connect(lambda: self.presenter.open_add_edit_view(person.person_id))
-        delete_button.clicked.connect(lambda: self.presenter.delete_person(person.person_id))
+        edit_button.clicked.connect(lambda: self.presenter.open_add_edit_view(person))
+        delete_button.clicked.connect(lambda: self.presenter.delete_person(person))
 
         # Add the buttons to the layout
         action_layout.addWidget(edit_button)

@@ -23,15 +23,22 @@ class DataAccess:
         response = requests.get(url)
         if response.status_code == 200:
             return response.json()
+        elif response.status_code == 404:
+            return None
         else:
             response.raise_for_status()
 
     # Update (PUT)
     def update(self, endpoint, resource_id, data):
         url = f"{self.base_url}/{endpoint}/{resource_id}"
-        response = requests.put(url, json=data)
+        json_data = json.dumps(data)  # Convert the data to JSON format
+        print(f"Updating data at {url} with payload: {json_data}")  # For debugging
+        
+        headers = {"Content-Type": "application/json", "accept" : "*/*"}  # Set the header explicitly
+        response = requests.put(url, data=json_data, headers=headers)
+        
         if response.status_code == 200:
-            return response.json()
+            return True
         else:
             response.raise_for_status()
 

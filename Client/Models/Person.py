@@ -8,10 +8,10 @@ class Person:
         :param age: Age of the person
         :param address: Address of the person
         """
-        self.person_id = id
+        self.id = id
         self.name = name
         self.age = age
         self.address = address
 
     def __repr__(self):
-        return f"Person(id={self.person_id}, name='{self.name}', age={self.age}, address='{self.address}')"
+        return f"Person(id={self.id}, name='{self.name}', age={self.age}, address='{self.address}')"

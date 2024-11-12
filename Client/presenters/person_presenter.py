@@ -31,7 +31,7 @@ class PersonPresenter:
             self.add_edit_view.address_input.clear()
         
         self.main_window_presenter.load_panel(self.add_edit_view)
-
+    
     def save_person(self, id, name, age, address):
         try:
             person = Person(id=int(id), name=name, age=int(age), address=address)
@@ -41,10 +41,14 @@ class PersonPresenter:
         except Exception as e:
             print(f"An error occurred: {e}")
             return
-        self.model.add(person)
+        
+        if self.model.get(person.id):
+            self.model.update(person)
+        else:
+            self.model.add(person)
         self.load_data()
         self.main_window_presenter.load_panel(self.list_view)
 
     def delete_person(self, person):
-        self.model.remove(person)
+        self.model.delete(person)
         self.load_data()
