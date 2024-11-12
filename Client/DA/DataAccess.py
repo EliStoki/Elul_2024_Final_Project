@@ -1,8 +1,10 @@
 import requests
+import json
+from models.person import Person
 
 class DataAccess:
     def __init__(self):
-        base_url = base_url
+        self.base_url = "http://localhost:5134/api"
 
     # Create (POST)
     def create(self, endpoint, data):
@@ -45,25 +47,37 @@ class DataAccess:
 
 # # Example usage:
 
-# if __name__ == "__main__":
-#     base_url = "https://api.example.com"  # Replace with actual server URL
-#     api = DataAccess(base_url)
+if __name__ == "__main__":
+    base_url = "http://localhost:5134/api"  # Replace with actual server URL
+    api = DataAccess(base_url)
 
-#     # Create a new resource
-#     new_data = {"name": "John", "age": 30}
-#     created_resource = api.create("employees", new_data)
-#     print("Created:", created_resource)
+    persons = api.read("person")
+    print("Persons:", persons)
+    # Parse JSON response
+    data = json.loads(persons)
 
-#     # Read the created resource
-#     employee_id = created_resource["id"]
-#     fetched_resource = api.read("employees", employee_id)
-#     print("Fetched:", fetched_resource)
+    # Convert each dictionary in JSON response to a Person object
+    people = [Person(**person) for person in data]
 
-#     # Update the resource
-#     update_data = {"name": "John Doe", "age": 31}
-#     updated_resource = api.update("employees", employee_id, update_data)
-#     print("Updated:", updated_resource)
+    # Output the result
+    for person in people:
+        print(person)
 
-#     # Delete the resource
-#     delete_response = api.delete("employees", employee_id)
-#     print(delete_response)
+    # # Create a new resource
+    # new_data = {"name": "John", "age": 30}
+    # created_resource = api.create("employees", new_data)
+    # print("Created:", created_resource)
+
+    # # Read the created resource
+    # employee_id = created_resource["id"]
+    # fetched_resource = api.read("employees", employee_id)
+    # print("Fetched:", fetched_resource)
+
+    # # Update the resource
+    # update_data = {"name": "John Doe", "age": 31}
+    # updated_resource = api.update("employees", employee_id, update_data)
+    # print("Updated:", updated_resource)
+
+    # # Delete the resource
+    # delete_response = api.delete("employees", employee_id)
+    # print(delete_response)

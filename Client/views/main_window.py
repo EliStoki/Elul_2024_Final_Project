@@ -6,6 +6,9 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Employee Management System")
+
+        self.setMinimumHeight(400)
+        self.setMinimumWidth(700)
         
         # Sidebar list to navigate between models.
         self.sidebar = QListWidget()
@@ -13,6 +16,9 @@ class MainWindow(QMainWindow):
         self.sidebar.addItem("Employees")
         self.sidebar.addItem("Departments")
         self.sidebar.addItem("Permissions")
+
+        # set slide bar width
+        self.sidebar.setMaximumWidth(100)
         
         # Main area where model-specific panels are displayed.
         self.main_area = QStackedWidget()
