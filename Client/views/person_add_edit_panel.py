@@ -7,7 +7,12 @@ class PersonAddEditPanel(QWidget):
         
         layout = QVBoxLayout(self)
         
+        
         # Input fields for person details
+        self.id_input = QLineEdit()
+        self.id_input.setPlaceholderText("ID")
+        layout.addWidget(self.id_input)
+
         self.name_input = QLineEdit()
         self.name_input.setPlaceholderText("Name")
         layout.addWidget(self.name_input)
@@ -29,7 +34,8 @@ class PersonAddEditPanel(QWidget):
         self.presenter = presenter
     
     def on_save_clicked(self):
+        id = self.id_input.text()
         name = self.name_input.text()
         age = self.age_input.text()
         address = self.address_input.text()
-        self.presenter.save_person(name, age, address)
+        self.presenter.save_person(id, name, age, address)
