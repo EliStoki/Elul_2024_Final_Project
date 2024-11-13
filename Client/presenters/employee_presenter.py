@@ -34,7 +34,7 @@ class EmployeePresenter:
         self.main_window_presenter.load_panel(self.add_edit_view)
 
     def save_employee(self, name, position, dept_name):
-        department = Department(dept_name, dept_id=None)  # Mock department
+        department = Department(dept_id=None, deptName=dept_name)  # Mock department
         employee = Employee(name, age=None, address=None, employee_id=None, position=position, department=department, image_url=None, permission=None)
         self.model.append(employee)
         self.load_data()

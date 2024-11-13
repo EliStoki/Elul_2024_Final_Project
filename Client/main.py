@@ -16,6 +16,7 @@ from presenters.permission_presenter import PermissionPresenter
 from presenters.main_window_presenter import MainWindowPresenter
 from models.person_da import PersonDA
 from models.permission_da import PermissionDA
+from models.department_da import DepartmentDA
 
 def main():
     # Create the application instance
@@ -27,7 +28,7 @@ def main():
     # Initialize models
     person_model = PersonDA()
     employee_model = []
-    department_model = []
+    department_model = DepartmentDA()
     permission_model = PermissionDA()
     
         
