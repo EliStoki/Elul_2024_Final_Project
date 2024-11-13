@@ -8,6 +8,10 @@ class PermissionAddEditPanel(QWidget):
         layout = QVBoxLayout(self)
         
         # Input fields for permission details
+        self.id_input = QLineEdit()
+        self.id_input.setPlaceholderText("Permission ID")
+        layout.addWidget(self.id_input)
+
         self.floor_level_input = QLineEdit()
         self.floor_level_input.setPlaceholderText("Floor Level")
         layout.addWidget(self.floor_level_input)
@@ -25,6 +29,7 @@ class PermissionAddEditPanel(QWidget):
         self.presenter = presenter
     
     def on_save_clicked(self):
+        id = self.id_input.text()
         floor_level = self.floor_level_input.text()
         building = self.building_input.text()
-        self.presenter.save_permission(floor_level, building)
+        self.presenter.save_permission(id, floor_level, building)

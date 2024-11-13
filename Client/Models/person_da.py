@@ -11,7 +11,7 @@ class PersonDA:
     
     def get(self, person_id):
         person = self.api.read("person", person_id)
-        return Person(**person)
+        return Person(**person) if person else None
 
     def add(self, person : Person):
         data = person.__dict__
