@@ -1,7 +1,5 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem, QPushButton, QLabel, QHBoxLayout
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem, QPushButton, QHBoxLayout
 from PySide6.QtGui import QIcon
-
-from presenters.person_presenter import PersonPresenter
 
 class PersonListPanel(QWidget):
     def __init__(self):
@@ -24,19 +22,22 @@ class PersonListPanel(QWidget):
         # Add button to add persons
         self.add_button = QPushButton("Add Person")
         main_layout.addWidget(self.add_button)
-        self.add_button.clicked.connect(lambda: self.presenter.open_add_edit_view())
+        self.add_button.clicked.connect(lambda: self.presenter.open_add_view())  # Open Add View
 
-    def set_presenter(self, presenter : PersonPresenter):
+    def set_presenter(self, presenter):
+        """Set the presenter for this view."""
         self.presenter = presenter
 
     def clear(self):
+        """Clear the table."""
         self.table.setRowCount(0)
 
     def add_item(self, person):
+        """Add a person to the table."""
         # Add a new row to the table
         row_position = self.table.rowCount()
         self.table.insertRow(row_position)
-        
+
         # Set the row height
         self.table.setRowHeight(row_position, 40)
 
@@ -58,8 +59,10 @@ class PersonListPanel(QWidget):
         delete_button.setIconSize(delete_button.sizeHint())
         delete_button.setFixedSize(delete_button.sizeHint())
 
-        # Connect the buttons to the presenter (Pass row index and person_id as data)
-        edit_button.clicked.connect(lambda: self.presenter.open_add_edit_view(person))
+        # Connect the buttons to the presenter
+        # For edit, use the open_edit_view method
+        edit_button.clicked.connect(lambda: self.presenter.open_edit_view(person))
+        # For delete, use the delete_person method
         delete_button.clicked.connect(lambda: self.presenter.delete_person(person))
 
         # Add the buttons to the layout

@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QPushButton
 
-class DepartmentAddEditPanel(QWidget):
+class DepartmentAddPanel(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Add/Edit Department")
