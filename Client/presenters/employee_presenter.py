@@ -1,9 +1,10 @@
 from models.employee import Employee
 from models.department import Department
 from presenters.main_window_presenter import MainWindowPresenter
+from models.employee_da import EmployeeDA 
 
 class EmployeePresenter:
-    def __init__(self, model, list_view, add_edit_view, main_window_presenter : MainWindowPresenter):
+    def __init__(self, model : EmployeeDA, list_view, add_edit_view, main_window_presenter : MainWindowPresenter):
         self.model = model
         self.list_view = list_view
         self.add_edit_view = add_edit_view
@@ -18,15 +19,15 @@ class EmployeePresenter:
         self.load_data()
 
     def load_data(self):
-        self.list_view.employee_list.clear()
-        for employee in self.model:
+        self.list_view.clear()
+        for employee in self.model.get_all():
             self.list_view.add_item(employee)
 
-    def open_add_edit_view(self, employee=None):
+    def open_add_edit_view(self, employee: Employee =None ):
         if employee:
             self.add_edit_view.name_input.setText(employee.name)
             self.add_edit_view.position_input.setText(employee.position)
-            self.add_edit_view.dept_input.setText(employee.department.dept_name)
+            self.add_edit_view.dept_input.setText(employee.department.deptName)
         else:
             self.add_edit_view.name_input.clear()
             self.add_edit_view.position_input.clear()
@@ -36,11 +37,14 @@ class EmployeePresenter:
     def save_employee(self, name, position, dept_name):
         department = Department(dept_id=None, deptName=dept_name)  # Mock department
         employee = Employee(name, age=None, address=None, employee_id=None, position=position, department=department, image_url=None, permission=None)
-        self.model.append(employee)
+        if self.model.get(employee.id):
+            self.model.update(employee)
+        else:
+            self.model.add(employee)
         self.load_data()
         self.main_window_presenter.load_panel(self.list_view)
     
     def delete_employee(self, employee):
-        self.model.remove(employee)
+        self.model.delete(employee)
         self.load_data()
 

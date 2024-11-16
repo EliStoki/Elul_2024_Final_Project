@@ -12,7 +12,7 @@ class DataAccess:
         print(f"Creating data at {url} with payload: {data}")  # For debugging
         response = requests.post(url, json=data)
         if response.status_code == 201:
-            return response.json()  # Assuming server returns the created object as JSON
+            return response.json()
         else:
             response.raise_for_status()
 

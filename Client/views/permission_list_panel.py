@@ -22,7 +22,7 @@ class PermissionListPanel(QWidget):
         # Add button to add permissions
         self.add_button = QPushButton("Add Permission")
         main_layout.addWidget(self.add_button)
-        self.add_button.clicked.connect(lambda: self.presenter.open_add_edit_view())
+        self.add_button.clicked.connect(lambda: self.presenter.open_add_view())
 
     def set_presenter(self, presenter):
         self.presenter = presenter
@@ -56,7 +56,7 @@ class PermissionListPanel(QWidget):
         delete_button.setFixedSize(delete_button.sizeHint())
 
         # Connect the buttons to the presenter (Pass row index and permission_id as data)
-        edit_button.clicked.connect(lambda: self.presenter.open_add_edit_view(permission))
+        edit_button.clicked.connect(lambda: self.presenter.open_edit_view(permission))
         delete_button.clicked.connect(lambda: self.presenter.delete_permission(permission))
 
         # Add the buttons to the layout
