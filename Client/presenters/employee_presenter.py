@@ -48,3 +48,14 @@ class EmployeePresenter:
         self.model.delete(employee)
         self.load_data()
 
+    def filter_table(self):
+        """Filter the table rows based on the search bar text and selected column."""
+        search_text = self.list_view.search_bar.text().lower()
+        selected_column = self.list_view.filter_dropdown.currentIndex()  # Get selected column index
+
+        for row in range(self.list_view.table.rowCount()):
+            item = self.list_view.table.item(row, selected_column)
+            if item and search_text in item.text().lower():
+                self.list_view.table.showRow(row)
+            else:
+                self.list_view.table.hideRow(row)

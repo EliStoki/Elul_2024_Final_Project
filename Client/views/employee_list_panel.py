@@ -1,32 +1,76 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem, QPushButton, QLabel, QHBoxLayout
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QTableWidget,
+    QTableWidgetItem,
+    QPushButton,
+    QLabel,
+    QHBoxLayout,
+    QLineEdit,
+    QComboBox,
+)
 from PySide6.QtGui import QIcon, QPixmap
 from models.employee import Employee
-from models.permission import Permission
-from models.department import Department
 from presenters.employee_presenter import EmployeePresenter
+
 
 class EmployeeListPanel(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Employees")
 
-        # Main layout
+        # Main layout with margins
         main_layout = QVBoxLayout(self)
+        main_layout.setContentsMargins(20, 20, 20, 20)
+
+        # Top layout
+        top_layout = QHBoxLayout()
+        top_layout.setContentsMargins(10, 5, 10, 5)
+
+        # Search bar layout
+        search_layout = QHBoxLayout()
+        button_layout = QHBoxLayout()
+
+        # Add label "Filter By:"
+        filter_label = QLabel("Filter By:")
+        search_layout.addWidget(filter_label)
+
+        # Create the filter dropdown
+        self.filter_dropdown = QComboBox(self)
+        self.filter_dropdown.addItems(["ID", "Name", "Position", "Department"])  # Filter options
+        self.filter_dropdown.setCurrentIndex(1)  # Default to "Name"
+        self.filter_dropdown.setFixedHeight(30)
+        self.filter_dropdown.currentIndexChanged.connect(lambda: self.presenter.filter_table())
+        search_layout.addWidget(self.filter_dropdown)
+
+        # Create the search bar
+        self.search_bar = QLineEdit(self)
+        self.search_bar.setPlaceholderText("Search...")
+        self.search_bar.setFixedHeight(30)
+        self.search_bar.textChanged.connect(lambda: self.presenter.filter_table())
+        search_layout.addWidget(self.search_bar)
+
+        # Add button to add employees
+        self.add_button = QPushButton("Add Employee")
+        self.add_button.setFixedHeight(30)
+        button_layout.addWidget(self.add_button)
+        self.add_button.clicked.connect(lambda: self.presenter.open_add_edit_view())
+
+        # Add layouts to the top layout
+        top_layout.addLayout(search_layout)
+        top_layout.addLayout(button_layout)
+
+        # Add the top layout to the main layout
+        main_layout.addLayout(top_layout)
 
         # Create the QTableWidget
         self.table = QTableWidget(self)
         self.table.setColumnCount(7)
-        self.table.setHorizontalHeaderLabels(["ID", "Name", "Position", "Department", "Image", "Permissions", "Actions"])  # Set column headers
-
-        # Disable editing of table cells
-        self.table.setEditTriggers(QTableWidget.NoEditTriggers)
-
+        self.table.setHorizontalHeaderLabels(
+            ["ID", "Name", "Position", "Department", "Image", "Permissions", "Actions"]
+        )
+        self.table.setEditTriggers(QTableWidget.NoEditTriggers)  # Disable editing
         main_layout.addWidget(self.table)
-
-        # Add button to add employees
-        self.add_button = QPushButton("Add Employee")
-        main_layout.addWidget(self.add_button)
-        self.add_button.clicked.connect(lambda: self.presenter.open_add_edit_view())
 
     def set_presenter(self, presenter: EmployeePresenter):
         self.presenter = presenter
@@ -38,7 +82,7 @@ class EmployeeListPanel(QWidget):
         # Add a new row to the table
         row_position = self.table.rowCount()
         self.table.insertRow(row_position)
-        
+
         # Set the row height
         self.table.setRowHeight(row_position, 60)
 
@@ -47,7 +91,7 @@ class EmployeeListPanel(QWidget):
         self.table.setItem(row_position, 1, QTableWidgetItem(employee.name))
         self.table.setItem(row_position, 2, QTableWidgetItem(employee.position))
         self.table.setItem(row_position, 3, QTableWidgetItem(employee.department.deptName))
-        
+
         # Display employee image
         image_label = QLabel()
         pixmap = QPixmap(employee.image_url)
@@ -69,7 +113,7 @@ class EmployeeListPanel(QWidget):
         delete_button.setIconSize(delete_button.sizeHint())
         delete_button.setFixedSize(delete_button.sizeHint())
 
-        # Connect the buttons to the presenter (Pass row index and employee_id as data)
+        # Connect the buttons to the presenter
         edit_button.clicked.connect(lambda: self.presenter.open_add_edit_view(employee))
         delete_button.clicked.connect(lambda: self.presenter.delete_employee(employee))
 
