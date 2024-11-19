@@ -7,8 +7,8 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("Employee Management System")
 
-        self.setMinimumHeight(400)
-        self.setMinimumWidth(700)
+        self.setMinimumHeight(500)
+        self.setMinimumWidth(900)
         
         # Sidebar list to navigate between models.
         self.sidebar = QListWidget()
