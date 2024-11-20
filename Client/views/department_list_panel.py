@@ -10,6 +10,8 @@ from PySide6.QtWidgets import (
     QComboBox,
 )
 from PySide6.QtGui import QIcon
+from presenters.department_presenter import DepartmentPresenter
+from models.department import Department
 
 
 class DepartmentListPanel(QWidget):
@@ -52,7 +54,7 @@ class DepartmentListPanel(QWidget):
         self.add_button = QPushButton("Add Department")
         self.add_button.setFixedHeight(30)
         button_layout.addWidget(self.add_button)
-        self.add_button.clicked.connect(lambda: self.presenter.open_add_edit_view())
+        self.add_button.clicked.connect(lambda: self.presenter.open_add_view())
 
         # Add layouts to the top layout
         top_layout.addLayout(search_layout)
@@ -68,13 +70,13 @@ class DepartmentListPanel(QWidget):
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)  # Disable editing
         main_layout.addWidget(self.table)
 
-    def set_presenter(self, presenter):
+    def set_presenter(self, presenter : DepartmentPresenter):
         self.presenter = presenter
 
     def clear(self):
         self.table.setRowCount(0)
 
-    def add_item(self, department):
+    def add_item(self, department : Department):
         # Add a new row to the table
         row_position = self.table.rowCount()
         self.table.insertRow(row_position)
@@ -99,7 +101,7 @@ class DepartmentListPanel(QWidget):
         delete_button.setFixedSize(delete_button.sizeHint())
 
         # Connect the buttons to the presenter
-        edit_button.clicked.connect(lambda: self.presenter.open_add_edit_view(department))
+        edit_button.clicked.connect(lambda: self.presenter.open_edit_view(department))
         delete_button.clicked.connect(lambda: self.presenter.delete_department(department))
 
         # Add the buttons to the layout

@@ -8,6 +8,7 @@ from views.employee_list_panel import EmployeeListPanel
 from views.employee_add_panel import EmployeeAddPanel
 from views.department_list_panel import DepartmentListPanel
 from views.department_add_panel import DepartmentAddPanel
+from views.department_edit_panel import DepartmentEditPanel
 from views.permission_list_panel import PermissionListPanel
 from views.permission_add_panel import PermissionAddPanel
 from views.permission_edit_panel import PermissionEditPanel
@@ -49,14 +50,15 @@ def main():
     
     # Initialize department views
     department_list_view = DepartmentListPanel()
-    department_add_edit_view = DepartmentAddPanel()
-    
+    department_add_view = DepartmentAddPanel()
+    department_edit_view = DepartmentEditPanel()
+
     # Initialize permission views
     permission_list_view = PermissionListPanel()
     permission_add_view = PermissionAddPanel()
     permission_edit_view = PermissionEditPanel()
 
-    # Add views to the main window's main area stack
+    # Add views to the main window's panels area stack
     main_window_presenter.add_panel(person_list_view)
     main_window_presenter.add_panel(employee_list_view)
     main_window_presenter.add_panel(department_list_view)
@@ -64,14 +66,15 @@ def main():
     main_window_presenter.add_panel(person_add_view)
     main_window_presenter.add_panel(person_edit_view)
     main_window_presenter.add_panel(employee_add_edit_view)
-    main_window_presenter.add_panel(department_add_edit_view)
+    main_window_presenter.add_panel(department_add_view)
+    main_window_presenter.add_panel(department_edit_view)
     main_window_presenter.add_panel(permission_add_view)
     main_window_presenter.add_panel(permission_edit_view)
 
     # Initialize presenters
     person_presenter = PersonPresenter(person_model, person_list_view, person_add_view, person_edit_view, main_window_presenter)
     employee_presenter = EmployeePresenter(employee_model, employee_list_view, employee_add_edit_view, main_window_presenter)
-    department_presenter = DepartmentPresenter(department_model, department_list_view, department_add_edit_view, main_window_presenter)
+    department_presenter = DepartmentPresenter(department_model, department_list_view, department_add_view, department_edit_view, main_window_presenter)
     permission_presenter = PermissionPresenter(permission_model, permission_list_view, permission_add_view, permission_edit_view, main_window_presenter)
 
     # Show the main window
