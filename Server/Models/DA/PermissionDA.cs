@@ -38,12 +38,10 @@ public class PermissionDA
         {
             DataRow row = result.Rows[0];
             return new Permission(
+                Convert.ToInt32(row["permission_id"]),
                 Convert.ToInt32(row["floor_level"]),
                 row["building"].ToString()
-            )
-            {
-                Id = Convert.ToInt32(row["permission_id"])
-            };
+            );
         }
 
         return null;
