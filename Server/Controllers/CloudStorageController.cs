@@ -97,7 +97,7 @@ namespace Server.Controllers
             return await UploadFile(fileCropped, file.ContentType);
         }
 
-        public static IFormFile CreateIFormFileFromPath(string filePath)
+        private static IFormFile CreateIFormFileFromPath(string filePath)
         {
             var fileInfo = new FileInfo(filePath);
             var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);

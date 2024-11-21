@@ -72,7 +72,7 @@ public class DepartmentDA
     }
 
     // Method to delete a department
-    public async Task<int> DeleteDepartmentAsync(int deptId)
+    public async Task<int> DeleteDepartmentAsync(int deptId) // TO DO - check delete of department in use
     {
         // Check for employees in the department
         string checkQuery = $"SELECT EmployeeId FROM Employee WHERE dept_id = {deptId}";

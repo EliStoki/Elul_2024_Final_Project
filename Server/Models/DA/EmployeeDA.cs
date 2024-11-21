@@ -10,7 +10,7 @@ namespace Server.Models.DA
         private PersonDA personDA = new();
         public EmployeeDA() { }
 
-        public async Task<int> CreateEmployeeAsync(Employee employee)
+        public async Task<int> CreateEmployeeAsync(Employee employee) //TO DO - create automatic person + convert image to url....
         {
             string query = $@"
                 INSERT INTO Employee (Name, Age, Address, Position, DepartmentId, ImageUrl, PermissionId)
