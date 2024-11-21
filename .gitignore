@@ -129,6 +129,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+Client/myenv/
 
 # Spyder project settings
 .spyderproject
@@ -559,3 +560,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+Client/myenv/pyvenv.cfg
