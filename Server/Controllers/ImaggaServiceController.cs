@@ -25,7 +25,7 @@ namespace Server.Controllers
             try
             {
                 // Call your service to get the cropped image path (on the server)
-                string imagePath = await _imaggaService.GetFaceDetectionCropImage(imageUrl);
+                string imagePath = await _imaggaService.GetFaceDetectionCropImageUrl(imageUrl);
 
                 // Ensure the image exists
                 if (!System.IO.File.Exists(imagePath))
@@ -59,7 +59,7 @@ namespace Server.Controllers
             try
             {
                 // Call your service to get the cropped image path (on the server)
-                string imagePath = await _imaggaService.GetFaceDetectionCropImage(imageUrl);
+                string imagePath = await _imaggaService.GetFaceDetectionCropImageUrl(imageUrl);
 
                 // Ensure the image exists
                 if (!System.IO.File.Exists(imagePath))

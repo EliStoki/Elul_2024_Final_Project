@@ -9,6 +9,10 @@ public class Permission
     public int FloorLevel { get; set; }
     public string Building { get; set; }
 
+    public Permission()
+    {
+        
+    }
     public Permission(int floorLevel, string building)
     {
         FloorLevel = floorLevel;

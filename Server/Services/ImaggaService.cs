@@ -29,7 +29,7 @@ public class ImaggaService
         _httpClient = new HttpClient();
     }
 
-    public async Task<string> GetFaceDetectionCropImage(string imageUrl, string userName = "userName")
+    public async Task<string> GetFaceDetectionCropImageUrl(string imageUrl, string userName = "userName")
     {
         string basicAuthValue = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{apiKey}:{apiSecret}"));
 
