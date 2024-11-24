@@ -54,7 +54,7 @@ class EmployeeListPanel(QWidget):
         self.add_button = QPushButton("Add Employee")
         self.add_button.setFixedHeight(30)
         button_layout.addWidget(self.add_button)
-        self.add_button.clicked.connect(lambda: self.presenter.open_add_edit_view())
+        self.add_button.clicked.connect(lambda: self.presenter.open_add_view())
 
         # Add layouts to the top layout
         top_layout.addLayout(search_layout)
@@ -87,19 +87,19 @@ class EmployeeListPanel(QWidget):
         self.table.setRowHeight(row_position, 60)
 
         # Insert each attribute into its respective column
-        self.table.setItem(row_position, 0, QTableWidgetItem(str(employee.employee_id)))
+        self.table.setItem(row_position, 0, QTableWidgetItem(str(employee.id)))
         self.table.setItem(row_position, 1, QTableWidgetItem(employee.name))
         self.table.setItem(row_position, 2, QTableWidgetItem(employee.position))
         self.table.setItem(row_position, 3, QTableWidgetItem(employee.department.deptName))
 
         # Display employee image
         image_label = QLabel()
-        pixmap = QPixmap(employee.image_url)
+        pixmap = QPixmap(employee.imageUrl)
         image_label.setPixmap(pixmap.scaled(50, 50))  # Scale the image for consistent row height
         self.table.setCellWidget(row_position, 4, image_label)
 
         # Display permissions
-        self.table.setItem(row_position, 5, QTableWidgetItem(employee.permission.id))
+        self.table.setItem(row_position, 5, QTableWidgetItem(str(employee.permission.id)))
 
         # Create action buttons for each row
         action_layout = QHBoxLayout()
@@ -114,7 +114,7 @@ class EmployeeListPanel(QWidget):
         delete_button.setFixedSize(delete_button.sizeHint())
 
         # Connect the buttons to the presenter
-        edit_button.clicked.connect(lambda: self.presenter.open_add_edit_view(employee))
+        edit_button.clicked.connect(lambda: self.presenter.open_edit_view(employee))
         delete_button.clicked.connect(lambda: self.presenter.delete_employee(employee))
 
         # Add the buttons to the layout

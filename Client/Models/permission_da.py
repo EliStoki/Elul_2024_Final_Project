@@ -18,12 +18,12 @@ class PermissionDA:
 
     def add(self, permission: Permission):
         # Convert the Permission object to a dictionary and add it to the database
-        data = permission.__dict__
+        data = permission.to_dict()
         return self.api.create("permission", data)
 
     def update(self, permission: Permission):
         # Convert the Permission object to a dictionary and update the entry in the database
-        data = permission.__dict__
+        data = permission.to_dict()
         return self.api.update("permission", permission.id, data)
 
     def delete(self, permission: Permission):

@@ -15,3 +15,15 @@ class Person:
 
     def __repr__(self):
         return f"Person(id={self.id}, name='{self.name}', age={self.age}, address='{self.address}')"
+    
+    def to_dict(self):
+        """
+        Convert the person object to a dictionary.
+        :return: A dictionary containing the person's attributes
+        """
+        return {
+            "id": self.id,
+            "name": self.name,
+            "age": self.age,
+            "address": self.address
+        }
