@@ -33,8 +33,18 @@ class EmployeePresenter:
     def open_add_view(self):
         """Prepare and display the Add View."""
         self.add_view.name_input.clear()
+        self.add_view.age_input.clear()
+        self.add_view.address_input.clear()
         self.add_view.position_input.clear()
-        self.add_view.dept_input.clear()
+
+        self.add_view.department_input.clear()
+        for dept in self.dept_da.get_all():
+            self.add_view.department_input.addItem(dept.deptName, dept)
+
+        self.add_view.permission_input.clear()
+        for permission in self.permission_da.get_all():
+            self.add_view.permission_input.addItem(str(permission.id), permission)
+            
         self.main_window_presenter.load_panel(self.add_view)
 
     def open_edit_view(self, employee: Employee):
@@ -42,13 +52,17 @@ class EmployeePresenter:
         self.edit_view.edited_employee = employee.id
         self.edit_view.name_input.setText(employee.name)
         self.edit_view.position_input.setText(employee.position)
+
         self.edit_view.department_input.clear()
         for dept in self.dept_da.get_all():
             self.edit_view.department_input.addItem(dept.deptName, dept)
+        self.edit_view.department_input.setCurrentText(employee.department.deptName)
+
         self.edit_view.permission_input.clear()
         for permission in self.permission_da.get_all():
             self.edit_view.permission_input.addItem(str(permission.id), permission)
-        self.edit_view.department_input.setCurrentText(employee.department.deptName)
+        self.edit_view.permission_input.setCurrentText(str(employee.permission.id))
+
         self.main_window_presenter.load_panel(self.edit_view)
 
     def add_employee(self, id, name, position, dept_name):
