@@ -68,6 +68,9 @@ class DepartmentListPanel(QWidget):
         self.table.setColumnCount(3)
         self.table.setHorizontalHeaderLabels(["Department ID", "Name", "Actions"])
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)  # Disable editing
+        # remove the row numbers
+        self.table.verticalHeader().setVisible(False)
+
         main_layout.addWidget(self.table)
 
     def set_presenter(self, presenter : DepartmentPresenter):
@@ -92,14 +95,14 @@ class DepartmentListPanel(QWidget):
         action_layout = QHBoxLayout()
         edit_button = QPushButton()
         edit_button.setIcon(QIcon("resources/edit icon.png"))
-        edit_button.setIconSize(edit_button.sizeHint())
-        edit_button.setFixedSize(edit_button.sizeHint())
+        edit_button.setIconSize(edit_button.sizeHint() * 0.8)
+        edit_button.setFixedSize(30, 30)  # Set fixed size to fit the cell
 
         delete_button = QPushButton()
         delete_button.setIcon(QIcon("resources/delete icon.png"))
-        delete_button.setIconSize(delete_button.sizeHint())
-        delete_button.setFixedSize(delete_button.sizeHint())
-
+        delete_button.setIconSize(delete_button.sizeHint() * 0.8)
+        delete_button.setFixedSize(30, 30)  # Set fixed size to fit the cell
+        
         # Connect the buttons to the presenter
         edit_button.clicked.connect(lambda: self.presenter.open_edit_view(department))
         delete_button.clicked.connect(lambda: self.presenter.delete_department(department))

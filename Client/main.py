@@ -1,5 +1,6 @@
 import sys
 from PySide6.QtWidgets import QApplication
+from views.style.main_style import apply_global_style, configure_main_window
 from views.main_window import MainWindow
 from views.person_list_panel import PersonListPanel
 from views.person_add_panel import PersonAddPanel
@@ -28,8 +29,12 @@ def main():
     # Create the application instance
     app = QApplication(sys.argv)
     
+    # Apply global styling
+    apply_global_style(app)
+
     # Initialize the main window
     main_window = MainWindow()
+    configure_main_window(main_window)
     
     # Initialize models
     person_model = PersonDA()

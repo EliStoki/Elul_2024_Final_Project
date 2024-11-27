@@ -65,7 +65,10 @@ class PersonListPanel(QWidget):
         self.table = QTableWidget(self)
         self.table.setColumnCount(5)
         self.table.setHorizontalHeaderLabels(["ID", "Name", "Age", "Address", "Actions"])  # Set column headers
-
+        self.table.setColumnWidth(4, 100)  # Set column width for 'Actions'
+        # remove the row numbers
+        self.table.verticalHeader().setVisible(False)
+        
         # Disable editing of table cells
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
 
@@ -98,13 +101,13 @@ class PersonListPanel(QWidget):
         action_layout = QHBoxLayout()
         edit_button = QPushButton()
         edit_button.setIcon(QIcon("resources/edit icon.png"))
-        edit_button.setIconSize(edit_button.sizeHint())
-        edit_button.setFixedSize(edit_button.sizeHint())
+        edit_button.setIconSize(edit_button.sizeHint() * 0.8)
+        edit_button.setFixedSize(30, 30)  # Set fixed size to fit the cell
 
         delete_button = QPushButton()
         delete_button.setIcon(QIcon("resources/delete icon.png"))
-        delete_button.setIconSize(delete_button.sizeHint())
-        delete_button.setFixedSize(delete_button.sizeHint())
+        delete_button.setIconSize(delete_button.sizeHint() * 0.8)
+        delete_button.setFixedSize(30, 30)  # Set fixed size to fit the cell
 
         # Connect the buttons to the presenter
         # For edit, use the open_edit_view method

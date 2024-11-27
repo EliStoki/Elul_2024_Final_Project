@@ -72,6 +72,9 @@ class EmployeeListPanel(QWidget):
             ["ID", "Name", "Position", "Department", "Image", "Permissions", "Actions"]
         )
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)  # Disable editing
+        # remove the row numbers
+        self.table.verticalHeader().setVisible(False)
+
         main_layout.addWidget(self.table)
 
     def set_presenter(self, presenter: EmployeePresenter):
@@ -121,13 +124,13 @@ class EmployeeListPanel(QWidget):
         action_layout = QHBoxLayout()
         edit_button = QPushButton()
         edit_button.setIcon(QIcon("resources/edit icon.png"))
-        edit_button.setIconSize(edit_button.sizeHint())
-        edit_button.setFixedSize(edit_button.sizeHint())
+        edit_button.setIconSize(edit_button.sizeHint() * 0.8)
+        edit_button.setFixedSize(30, 30)  # Set fixed size to fit the cell
 
         delete_button = QPushButton()
         delete_button.setIcon(QIcon("resources/delete icon.png"))
-        delete_button.setIconSize(delete_button.sizeHint())
-        delete_button.setFixedSize(delete_button.sizeHint())
+        delete_button.setIconSize(delete_button.sizeHint() * 0.8)
+        delete_button.setFixedSize(30, 30)  # Set fixed size to fit the cell
 
         # Connect the buttons to the presenter
         edit_button.clicked.connect(lambda: self.presenter.open_edit_view(employee))

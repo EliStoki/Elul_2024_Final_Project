@@ -4,6 +4,7 @@ class MainWindowPresenter:
     def __init__(self, main_view):
         self.main_view = main_view
         self.main_view.set_presenter(self)
+        self.main_view.sidebar.setCurrentRow(0)
 
     def add_panel(self, panel : QWidget):
         self.main_view.main_area.addWidget(panel)

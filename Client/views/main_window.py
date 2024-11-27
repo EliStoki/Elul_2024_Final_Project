@@ -7,7 +7,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("Employee Management System")
 
-        self.setMinimumHeight(500)
+        self.setMinimumHeight(650)
         self.setMinimumWidth(900)
         
         # Sidebar list to navigate between models.
@@ -16,9 +16,9 @@ class MainWindow(QMainWindow):
         self.sidebar.addItem("Departments")
         self.sidebar.addItem("Permissions")
         self.sidebar.addItem("Persons")
-        
+
         # set slide bar width
-        self.sidebar.setMaximumWidth(100)
+        self.sidebar.setMaximumWidth(150)
         self.sidebar.setContentsMargins(5,100,5,100)
         
         # the right side layout of the main window
