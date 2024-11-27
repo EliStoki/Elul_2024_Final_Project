@@ -41,7 +41,7 @@ class EmployeeAddPanel(QWidget):
 
         # Input fields with labels
         form_container = QVBoxLayout()
-        form_container.setContentsMargins(40, 0, 40, 0)
+        form_container.setContentsMargins(200, 0, 200, 0)
 
         form_layout = QFormLayout()
 
@@ -92,7 +92,7 @@ class EmployeeAddPanel(QWidget):
 
         # Buttons layout
         button_container = QHBoxLayout()
-        button_container.setContentsMargins(40, 0, 40, 0)
+        button_container.setContentsMargins(200, 0, 200, 0)
         self.save_button = QPushButton("Save")
         self.cancel_button = QPushButton("Cancel")
 

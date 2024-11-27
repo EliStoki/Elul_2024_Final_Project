@@ -62,10 +62,10 @@ def main():
     permission_edit_view = PermissionEditPanel()
 
     # Add views to the main window's panels area stack
-    main_window_presenter.add_panel(person_list_view)
     main_window_presenter.add_panel(employee_list_view)
     main_window_presenter.add_panel(department_list_view)
     main_window_presenter.add_panel(permission_list_view)
+    main_window_presenter.add_panel(person_list_view)
     main_window_presenter.add_panel(person_add_view)
     main_window_presenter.add_panel(person_edit_view)
     main_window_presenter.add_panel(employee_add_view)

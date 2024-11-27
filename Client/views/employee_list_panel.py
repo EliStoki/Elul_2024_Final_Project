@@ -1,3 +1,4 @@
+import requests
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -9,6 +10,7 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QComboBox,
 )
+from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon, QPixmap
 from models.employee import Employee
 from presenters.employee_presenter import EmployeePresenter
@@ -94,8 +96,22 @@ class EmployeeListPanel(QWidget):
 
         # Display employee image
         image_label = QLabel()
-        pixmap = QPixmap(employee.imageUrl)
-        image_label.setPixmap(pixmap.scaled(50, 50))  # Scale the image for consistent row height
+        # Fetch the image from the URL
+        try:
+            response = requests.get(employee.imageUrl)
+            response.raise_for_status()  # Raise an error if the request failed
+
+            # Load the image into QPixmap
+            pixmap = QPixmap()
+            pixmap.loadFromData(response.content)
+
+            # Set the pixmap to the QLabel
+            image_label.setPixmap(pixmap.scaled(50, 50, Qt.KeepAspectRatio))  # Scale the image for consistent row height
+        except Exception as e:
+            print(f"Error loading image: {e}")
+            image_label.setText("Image not available")  # Fallback text if the image cannot be loaded
+
+        # Add the image label to the table
         self.table.setCellWidget(row_position, 4, image_label)
 
         # Display permissions

@@ -26,5 +26,8 @@ class MainWindowPresenter:
         # loads the new panel
         self.main_view.main_area.setCurrentWidget(panel)
 
+    def set_status_bar_text(self, text):
+        self.main_view.status_bar.setText(text)
+
     def run(self):
         self.main_view.show()        
