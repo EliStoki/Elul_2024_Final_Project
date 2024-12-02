@@ -109,9 +109,10 @@ class EmployeePresenter:
         self.load_data()
         self.main_window_presenter.load_panel(self.list_view)
 
-    def delete_employee(self, employee):
+    async def delete_employee(self, employee):
         """Delete the selected employee."""
-        self.model.delete(employee)
+        print("presenter delete_employee")
+        await self.model.delete(employee)
         self.load_data()
 
     def open_list_view(self):
@@ -129,3 +130,12 @@ class EmployeePresenter:
                 self.list_view.table.showRow(row)
             else:
                 self.list_view.table.hideRow(row)
+
+
+
+
+
+
+
+
+                

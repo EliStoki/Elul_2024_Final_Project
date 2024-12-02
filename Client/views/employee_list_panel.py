@@ -14,6 +14,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon, QPixmap
 from models.employee import Employee
 from presenters.employee_presenter import EmployeePresenter
+import asyncio
 
 
 class EmployeeListPanel(QWidget):
@@ -134,7 +135,7 @@ class EmployeeListPanel(QWidget):
 
         # Connect the buttons to the presenter
         edit_button.clicked.connect(lambda: self.presenter.open_edit_view(employee))
-        delete_button.clicked.connect(lambda: self.presenter.delete_employee(employee))
+        delete_button.clicked.connect(self.delete_employee)
 
         # Add the buttons to the layout
         action_layout.addWidget(edit_button)
@@ -144,3 +145,9 @@ class EmployeeListPanel(QWidget):
         action_widget = QWidget()
         action_widget.setLayout(action_layout)
         self.table.setCellWidget(row_position, 6, action_widget)  # 6 is the 'Actions' column index
+
+    def delete_employee(self, employee):
+        print("Deleting employee")
+        #asyncio.sleep(1)
+        asyncio.create_task(self.presenter.delete_employee(employee)) 
+        print("Deleted employee")

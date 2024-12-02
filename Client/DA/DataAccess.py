@@ -1,6 +1,7 @@
 import requests
 import json
 from models.person import Person
+import asyncio
 
 class DataAccess:
     def __init__(self):
