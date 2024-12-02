@@ -32,14 +32,14 @@ public class EmployeeController : ControllerBase
 
     // POST api/<EmployeeController>
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] Employee employee)
+    public async Task<IActionResult> Create([FromForm] Employee employee, [FromForm] IFormFile file)
     {
         if (employee == null)
         {
             return BadRequest("Employee object is null");
         }
 
-        int newEmployeeId = await _employeeDA.CreateEmployeeAsync(employee);
+        int newEmployeeId = await _employeeDA.CreateEmployeeAsync(employee, file);
         if (newEmployeeId > 0)
         {
             return Ok($"Employee created with Id = {newEmployeeId}");

@@ -1,32 +1,65 @@
 ﻿using System.Data;
+using System.Xml.Linq;
+
+using Server.Services;
 
 namespace Server.Models.DA
 {
     public class EmployeeDA
     {
         private DataBaseService _databaseService = DataBaseService.GetInstance();
+        private GoogleCloudStorageService _googleCloudStorageService = new();
+        private ImaggaService _imaggaService = new();
+
         private DepartmentDA departmentDA = new();
         private PermissionDA permissionDA = new();
         private PersonDA personDA = new();
+
         public EmployeeDA() { }
 
-        public async Task<int> CreateEmployeeAsync(Employee employee) //TO DO - create automatic person + convert image to url....
+        public async Task<int> CreateEmployeeAsync(Employee employee, IFormFile file)
         {
+
+            Person person = new(employee.Name, employee.Age, employee.Address);
+            var personId = await personDA.CreatePersonAsync(person);
+
+            var perm = await permissionDA.GetPermissionAsync(employee.Permission);
+            var dept = await departmentDA.GetDepartmentAsync(employee.Department);
+
+            if (dept == null)
+                throw new Exception("The Department do not exist");
+            if (perm == null)
+                throw new Exception("The Permission do not exist");
+
+            //Upload the image to Google Cloud Storage
+            var uniqueFileName = Path.GetRandomFileName();
+            using var fileStream = file.OpenReadStream();
+            var originalImageUrl = await _googleCloudStorageService.UploadFileAsync(fileStream, uniqueFileName, file.ContentType);
+
+            // Step 4: Process and crop the image using Imagga or any similar service
+            var croppedImagePath = await _imaggaService.GetFaceDetectionCropImageUrl(originalImageUrl, employee.Name);
+
+            // Step 5: Upload the cropped image to Google Cloud Storage
+            var croppedFileName = $"cropped_{uniqueFileName}";
+            using var croppedImageStream = new FileStream(croppedImagePath, FileMode.Open, FileAccess.Read);
+            var croppedImageUrl = await _googleCloudStorageService.UploadFileAsync(croppedImageStream, croppedFileName, "image/jpeg");
+
+
             string query = $@"
-                INSERT INTO Employee (Name, Age, Address, Position, DepartmentId, ImageUrl, PermissionId)
-                VALUES ('{employee.Name}', {employee.Age}, '{employee.Address}', '{employee.Position}', {employee.Department.Id}, '{employee.ImageUrl}', {employee.Permission.Id});
+                INSERT INTO Employee (employee_id, person_id, position, dept_id, image_url, permission_id)
+                VALUES ({personId+30}, {personId}, '{employee.Position}', {employee.Department}, '{croppedImageUrl}', {employee.Permission});
                 SELECT SCOPE_IDENTITY();";
+
 
             DataTable result = await _databaseService.ExecuteQueryAsync(query);
 
-            if (result.Rows.Count > 0 && result.Rows[0][0] != DBNull.Value)
+            if (result.Rows.Count > 0)
             {
-                return Convert.ToInt32(result.Rows[0][0]);
+                return personId + 30;
             }
-
+            
             return -1;
         }
-
 
         public async Task<Employee> GetEmployeeAsync(int id)
         {
@@ -60,9 +93,9 @@ namespace Server.Models.DA
                     person.Address,
                     Convert.ToInt32(row["employee_id"]),
                     row["Position"].ToString(),
-                    department,
+                    department.Id,
                     row["image_url"].ToString(),
-                    permission
+                    permission.Id
                 );
             }
 
@@ -100,9 +133,9 @@ namespace Server.Models.DA
                     person.Address,
                     Convert.ToInt32(row["employee_id"]),
                     row["Position"].ToString(),
-                    department,
+                    department.Id,
                     row["image_url"].ToString(),
-                    permission
+                    permission.Id
                 ));
             }
 
@@ -115,8 +148,8 @@ namespace Server.Models.DA
             string query = $@"
                 UPDATE Employee 
                 SET Name = '{employee.Name}', Age = {employee.Age}, Address = '{employee.Address}', 
-                    Position = '{employee.Position}', DepartmentId = {employee.Department.Id}, 
-                    ImageUrl = '{employee.ImageUrl}', PermissionId = {employee.Permission.Id}
+                    Position = '{employee.Position}', DepartmentId = {employee.Department}, 
+                    ImageUrl = '{employee.ImageUrl}', PermissionId = {employee.Permission}
                 WHERE employee_id = {employee.Id}";
 
             return await _databaseService.ExecuteNonQueryAsync(query);
