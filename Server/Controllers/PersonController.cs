@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Server.Commands.Person;
+using Server.Handlers.CommandHandlers;
+using Server.Handlers.QueryHandlers;
 using Server.Models;
-using Server.Models.DA;
+using Server.Queries.Person;
 
 namespace Server.Controllers
 {
@@ -8,22 +11,30 @@ namespace Server.Controllers
     [ApiController]
     public class PersonController : ControllerBase
     {
-        private readonly PersonDA _personDA = new PersonDA();
+        private readonly PersonQueryHandler _queryHandler;
+        private readonly PersonCommandHandler _commandHandler;
+
+        public PersonController(PersonQueryHandler queryHandler, PersonCommandHandler commandHandler)
+        {
+            _queryHandler = queryHandler;
+            _commandHandler = commandHandler;
+        }
 
         // GET: api/<PersonController>
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var persons = await _personDA.GetAllPersonsAsync();
+            var query = new GetAllPersonsQuery();
+            var persons = await _queryHandler.Handle(query);
             return Ok(persons);
         }
-
 
         // GET api/<PersonController>/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var person = await _personDA.GetPersonAsync(id);
+            var query = new GetPersonByIdQuery { Id = id };
+            var person = await _queryHandler.Handle(query);
             if (person != null)
             {
                 return Ok(person);
@@ -33,18 +44,17 @@ namespace Server.Controllers
 
         // POST api/<PersonController>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Person person)
+        public async Task<IActionResult> Post([FromBody] CreatePersonCommand command)
         {
-            if (person == null)
+            if (command == null)
             {
-                return BadRequest("Person object is null");
+                return BadRequest("Invalid person data.");
             }
 
-            int newPersonId = await _personDA.CreatePersonAsync(person);
+            int newPersonId = await _commandHandler.Handle(command);
             if (newPersonId > 0)
             {
-                //return CreatedAtAction(nameof(Get), new { id = newPersonId }, person);
-                return Ok($"id = {newPersonId}");
+                return Ok($"Person created with Id = {newPersonId}");
             }
 
             return StatusCode(500, "An error occurred while creating the person");
@@ -52,14 +62,14 @@ namespace Server.Controllers
 
         // PUT api/<PersonController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] Person person)
+        public async Task<IActionResult> Put(int id, [FromBody] UpdatePersonCommand command)
         {
-            if (id != person.Id)
+            if (id != command.Id)
             {
-                return BadRequest("Person ID mismatch");
+                return BadRequest("Person ID mismatch.");
             }
 
-            int result = await _personDA.UpdatePersonAsync(person);
+            int result = await _commandHandler.Handle(command);
             if (result > 0)
             {
                 return Ok("Person updated successfully");
@@ -72,7 +82,8 @@ namespace Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            int result = await _personDA.DeletePersonAsync(id);
+            var command = new DeletePersonCommand { Id = id };
+            int result = await _commandHandler.Handle(command);
             if (result > 0)
             {
                 return Ok($"Person with Id = {id} deleted successfully");
