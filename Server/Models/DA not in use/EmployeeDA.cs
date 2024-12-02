@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using System.Xml.Linq;
-
+using Server.Infrastructure;
 using Server.Services;
 
 namespace Server.Models.DA
@@ -113,8 +113,8 @@ namespace Server.Models.DA
             foreach (DataRow row in result.Rows)
             {
                 // Extract foreign key IDs for Department and Permission
-                int departmentId = Convert.ToInt32(row["DepartmentId"]);
-                int permissionId = Convert.ToInt32(row["PermissionId"]);
+                int departmentId = Convert.ToInt32(row["dept_id"]);
+                int permissionId = Convert.ToInt32(row["permission_id"]);
                 int personId = Convert.ToInt32(row["person_id"]);
 
                 // Fetch the Department and Permission objects asynchronously

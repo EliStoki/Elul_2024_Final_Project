@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using Server.Infrastructure;
 
 namespace Server.Models.DA;
 

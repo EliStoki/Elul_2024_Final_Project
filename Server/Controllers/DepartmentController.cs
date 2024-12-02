@@ -1,82 +1,87 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Server.Models;
-using Server.Models.DA;
+using Server.Commands.Department;
+using Server.Handlers.CommandHandlers;
+using Server.Handlers.QueryHandlers;
+using Server.Queries.Department;
+using Server.Queries;
 
-namespace Server.Controllers
+[ApiController]
+[Route("api/[controller]")]
+public class DepartmentController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class DepartmentController : ControllerBase
+    private readonly DepartmentCommandHandler _commandHandler;
+    private readonly DepartmentQueryHandler _queryHandler;
+
+    public DepartmentController(DepartmentCommandHandler commandHandler, DepartmentQueryHandler queryHandler)
     {
-        private readonly DepartmentDA _departmentDA = new DepartmentDA();
+        _commandHandler = commandHandler;
+        _queryHandler = queryHandler;
+    }
 
-        // GET: api/<DepartmentController>
-        [HttpGet]
-        public async Task<IActionResult> Get()
+    // GET: api/Department
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        var query = new GetAllDepartmentsQuery();
+        var departments = await _queryHandler.Handle(query);
+        return Ok(departments);
+    }
+
+    // GET: api/Department/5
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Get(int id)
+    {
+        var query = new GetDepartmentByIdQuery { Id = id };
+        var department = await _queryHandler.Handle(query);
+        if (department == null)
         {
-            var departments = await _departmentDA.GetAllDepartmentsAsync();
-            return Ok(departments);
+            return NotFound($"Department with Id = {id} not found.");
+        }
+        return Ok(department);
+    }
+
+    // POST: api/Department
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody] CreateDepartmentCommand command)
+    {
+        if (command == null)
+        {
+            return BadRequest("Invalid department data.");
         }
 
-        // GET api/<DepartmentController>/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        int newDeptId = await _commandHandler.Handle(command);
+        return Ok($"Department created with Id = {newDeptId}");
+    }
+
+    // PUT: api/Department/5
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put(int id, [FromBody] UpdateDepartmentCommand command)
+    {
+        if (id != command.Id)
         {
-            var department = await _departmentDA.GetDepartmentAsync(id);
-            if (department != null)
-            {
-                return Ok(department);
-            }
-            return NotFound($"Department with Id = {id} not found");
+            return BadRequest("Department ID mismatch.");
         }
 
-        // POST api/<DepartmentController>
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Department department)
+        int result = await _commandHandler.Handle(command);
+        if (result > 0)
         {
-            if (department == null)
-            {
-                return BadRequest("Department object is null");
-            }
-
-            int newDeptId = await _departmentDA.CreateDepartmentAsync(department);
-            if (newDeptId > 0)
-            {
-                return Ok($"Department created with Id = {newDeptId}");
-            }
-
-            return StatusCode(500, "An error occurred while creating the department");
+            return Ok("Department updated successfully.");
         }
 
-        // PUT api/<DepartmentController>/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] Department department)
+        return NotFound($"Department with Id = {id} not found.");
+    }
+
+    // DELETE: api/Department/5
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var command = new DeleteDepartmentCommand { Id = id };
+        int result = await _commandHandler.Handle(command);
+        if (result > 0)
         {
-            if (id != department.Id)
-            {
-                return BadRequest("Department ID mismatch");
-            }
-
-            int result = await _departmentDA.UpdateDepartmentAsync(department);
-            if (result > 0)
-            {
-                return Ok("Department updated successfully");
-            }
-
-            return NotFound($"Department with Id = {id} not found");
+            return Ok($"Department with Id = {id} deleted successfully.");
         }
 
-        // DELETE api/<DepartmentController>/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            int result = await _departmentDA.DeleteDepartmentAsync(id);
-            if (result > 0)
-            {
-                return Ok($"Department with Id = {id} deleted successfully");
-            }
-
-            return NotFound($"Department with Id = {id} not found");
-        }
+        return NotFound($"Department with Id = {id} not found.");
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
-namespace Server.Models.DA;
+namespace Server.Infrastructure;
 
 public class DataBaseService
 {
