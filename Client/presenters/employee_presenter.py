@@ -28,7 +28,7 @@ class EmployeePresenter:
         """Load data into the list view."""
         self.list_view.clear()
         for employee in self.model.get_all():
-            self.list_view.add_item(employee)
+            self.list_view.add_item(employee, self.dept_da.get(employee.department_id).deptName)
 
     def open_add_view(self):
         """Prepare and display the Add View."""
@@ -56,7 +56,7 @@ class EmployeePresenter:
         self.edit_view.department_input.clear()
         for dept in self.dept_da.get_all():
             self.edit_view.department_input.addItem(dept.deptName, dept)
-        self.edit_view.department_input.setCurrentText(employee.department.deptName)
+        self.edit_view.department_input.setCurrentText(self.dept_da.get(employee.department_id).deptName)
 
         self.edit_view.permission_input.clear()
         for permission in self.permission_da.get_all():
@@ -65,17 +65,20 @@ class EmployeePresenter:
 
         self.main_window_presenter.load_panel(self.edit_view)
 
-    def add_employee(self, id, name, position, dept_name):
+    def add_employee(self, name, age, address, position, dept, permission, image_path):
         """Add a new employee."""
         try:
-            department = Department(id=None, deptName=dept_name)  # Mock department object
             employee = Employee(
-                id=int(id),
+                id=0,
                 name=name,
+                age=age,
+                address=address,
                 position=position,
-                department=department
+                department=int(dept),
+                imageUrl="",
+                permission=int(permission)
             )
-            self.model.add(employee)
+            self.model.add(employee, image_path)
         except ValueError as e:
             print(f"Error converting ID to integer: {e}")
             return

@@ -16,10 +16,11 @@ class EmployeeDA:
         employee = self.api.read("employee", employee_id)
         return Employee(**employee) if employee else None
 
-    def add(self, employee: Employee):
-        # Convert the Employee object to a dictionary and add it to the database
+    def add(self, employee: Employee, file_path: str):
+        # Convert the Employee object to a dictionary and add it to the database using multipart/form-data
         data = employee.to_dict()
-        return self.api.create("employee", data)
+        files = {'file': open(file_path, 'rb')}
+        return self.api.create_multipart("employee", data, files)
 
     def update(self, employee: Employee):
         # Convert the Employee object to a dictionary and update the entry in the database

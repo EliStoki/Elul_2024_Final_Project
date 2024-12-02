@@ -142,7 +142,11 @@ class EmployeeAddPanel(QWidget):
     def on_save_clicked(self):
         """Save employee details."""
         name = self.name_input.text()
+        age = self.age_input.text()
+        address = self.address_input.text()
         position = self.position_input.text()
-        dept = self.department_input.currentText()
+        dept = self.department_input.currentData().id
+        permission = self.permission_input.currentData().id
+        self.image_input.pixmap().toImage().save("temp.png")
         # Include logic to save the image file path if needed
-        self.presenter.save_employee(name, position, dept)
+        self.presenter.add_employee(name, age, address, position, dept, permission, "temp.png")

@@ -70,7 +70,7 @@ class EmployeeListPanel(QWidget):
         self.table = QTableWidget(self)
         self.table.setColumnCount(7)
         self.table.setHorizontalHeaderLabels(
-            ["ID", "Name", "Position", "Department", "Image", "Permissions", "Actions"]
+            ["Image", "ID", "Name", "Position", "Department", "Permissions", "Actions"]
         )
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)  # Disable editing
         # remove the row numbers
@@ -84,7 +84,7 @@ class EmployeeListPanel(QWidget):
     def clear(self):
         self.table.setRowCount(0)
 
-    def add_item(self, employee: Employee):
+    def add_item(self, employee: Employee, dept_name):
         # Add a new row to the table
         row_position = self.table.rowCount()
         self.table.insertRow(row_position)
@@ -93,10 +93,10 @@ class EmployeeListPanel(QWidget):
         self.table.setRowHeight(row_position, 60)
 
         # Insert each attribute into its respective column
-        self.table.setItem(row_position, 0, QTableWidgetItem(str(employee.id)))
-        self.table.setItem(row_position, 1, QTableWidgetItem(employee.name))
-        self.table.setItem(row_position, 2, QTableWidgetItem(employee.position))
-        self.table.setItem(row_position, 3, QTableWidgetItem(employee.department.deptName))
+        self.table.setItem(row_position, 1, QTableWidgetItem(str(employee.id)))
+        self.table.setItem(row_position, 2, QTableWidgetItem(employee.name))
+        self.table.setItem(row_position, 3, QTableWidgetItem(employee.position))
+        self.table.setItem(row_position, 4, QTableWidgetItem(dept_name))
 
         # Display employee image
         image_label = QLabel()
@@ -116,10 +116,10 @@ class EmployeeListPanel(QWidget):
             image_label.setText("Image not available")  # Fallback text if the image cannot be loaded
 
         # Add the image label to the table
-        self.table.setCellWidget(row_position, 4, image_label)
+        self.table.setCellWidget(row_position, 0, image_label)
 
         # Display permissions
-        self.table.setItem(row_position, 5, QTableWidgetItem(str(employee.permission.id)))
+        self.table.setItem(row_position, 5, QTableWidgetItem(str(employee.permission_id)))
 
         # Create action buttons for each row
         action_layout = QHBoxLayout()
@@ -147,7 +147,4 @@ class EmployeeListPanel(QWidget):
         self.table.setCellWidget(row_position, 6, action_widget)  # 6 is the 'Actions' column index
 
     def delete_employee(self, employee):
-        print("Deleting employee")
-        #asyncio.sleep(1)
-        asyncio.create_task(self.presenter.delete_employee(employee)) 
-        print("Deleted employee")
+        self.presenter.delete_employee(employee)

@@ -54,3 +54,13 @@ class DataAccess:
             return {"message": "Resource deleted successfully"}
         else:
             response.raise_for_status()
+
+    # Create (POST) with file upload
+    def create_multipart(self, endpoint, data, files):
+        url = f"{self.base_url}/{endpoint}"
+        print(f"Creating data at {url} with payload: {data} and files: {files}")  # For debugging
+        response = requests.post(url, data=data, files=files)
+        if response.status_code == 201:
+            return response.json()
+        else:
+            response.raise_for_status()

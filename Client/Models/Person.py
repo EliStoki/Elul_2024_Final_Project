@@ -22,8 +22,7 @@ class Person:
         :return: A dictionary containing the person's attributes
         """
         return {
-            "id": self.id,
-            "name": self.name,
-            "age": self.age,
-            "address": self.address
+            "Name": self.name,
+            "Age": self.age,
+            "Address": self.address
         }
