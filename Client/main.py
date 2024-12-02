@@ -32,7 +32,7 @@ def main():
     
     # Initialize models
     person_model = PersonDA()
-    employee_model = MockEmployeeDA()
+    employee_model = EmployeeDA()
     department_model = DepartmentDA()
     permission_model = PermissionDA()
     
