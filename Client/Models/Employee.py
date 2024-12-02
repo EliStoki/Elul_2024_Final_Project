@@ -3,19 +3,24 @@ from models.department import Department
 from models.permission import Permission
 
 # Employee model class, extending Person with additional employee-specific attributes.
+
 class Employee(Person):
-    def __init__(self, id, name, age, address, employee_id, position, department : Department, image_url, permission : Permission):
-        """
-        Initialize an employee with both personal and job-related attributes.
-        :param employee_id: Unique ID for the employee
-        :param position: Job title or role of the employee
-        :param department: Department object where the employee works
-        :param image_url: URL of the employee's image
-        :param permission: Permission object specifying access level
-        """
+    def __init__(self, id, name, age, address, position, department, imageUrl, permission):
         super().__init__(id, name, age, address)
-        self.employee_id = employee_id
         self.position = position
-        self.department = department  # Link to a Department instance
-        self.image_url = image_url
-        self.permission = permission  # Link to a Permission instance
+        self.department: Department = Department(**department) if isinstance(department, dict) else department
+        self.imageUrl = imageUrl
+        self.permission: Permission = Permission(**permission) if isinstance(permission, dict) else permission
+
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "age": self.age,
+            "address": self.address,
+            "employeeId": self.id,
+            "position": self.position,
+            "department": self.department.to_dict(),
+            "imageUrl": self.imageUrl,
+            "permission": self.permission.to_dict()
+        }
+

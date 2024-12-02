@@ -18,12 +18,12 @@ class DepartmentDA:
 
     def add(self, department: Department):
         # Convert the Department object to a dictionary and add it to the database
-        data = department.__dict__
+        data = department.to_dict()
         return self.api.create("department", data)
 
     def update(self, department: Department):
         # Convert the Department object to a dictionary and update the entry in the database
-        data = department.__dict__
+        data = department.to_dict()
         return self.api.update("department", department.id, data)
 
     def delete(self, department: Department):

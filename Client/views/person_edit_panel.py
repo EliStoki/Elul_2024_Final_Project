@@ -36,7 +36,7 @@ class PersonEditPanel(QWidget):
 
         # Input fields with labels
         form_container = QVBoxLayout()
-        form_container.setContentsMargins(40, 0, 40, 0)  # Add extra margins to the sides
+        form_container.setContentsMargins(200, 0, 200, 0)  # Add extra margins to the sides
 
         form_layout = QFormLayout()
 
@@ -64,7 +64,7 @@ class PersonEditPanel(QWidget):
 
         # Buttons layout
         button_container = QHBoxLayout()
-        button_container.setContentsMargins(40, 0, 40, 0)  # Add extra margins to the sides
+        button_container.setContentsMargins(200, 0, 200, 0)  # Add extra margins to the sides
         self.save_button = QPushButton("Save")
         self.cancel_button = QPushButton("Cancel")
 

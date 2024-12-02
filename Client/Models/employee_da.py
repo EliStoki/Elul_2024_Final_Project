@@ -18,12 +18,12 @@ class EmployeeDA:
 
     def add(self, employee: Employee):
         # Convert the Employee object to a dictionary and add it to the database
-        data = employee.__dict__
+        data = employee.to_dict()
         return self.api.create("employee", data)
 
     def update(self, employee: Employee):
         # Convert the Employee object to a dictionary and update the entry in the database
-        data = employee.__dict__
+        data = employee.to_dict()
         return self.api.update("employee", employee.id, data)
 
     def delete(self, employee: Employee):

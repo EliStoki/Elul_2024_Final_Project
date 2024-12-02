@@ -1,11 +1,13 @@
 import sys
 from PySide6.QtWidgets import QApplication
+from views.style.main_style import apply_global_style, configure_main_window
 from views.main_window import MainWindow
 from views.person_list_panel import PersonListPanel
 from views.person_add_panel import PersonAddPanel
 from views.person_edit_panel import PersonEditPanel
 from views.employee_list_panel import EmployeeListPanel
 from views.employee_add_panel import EmployeeAddPanel
+from views.employee_edit_panel import EmployeeEditPanel
 from views.department_list_panel import DepartmentListPanel
 from views.department_add_panel import DepartmentAddPanel
 from views.department_edit_panel import DepartmentEditPanel
@@ -27,8 +29,12 @@ def main():
     # Create the application instance
     app = QApplication(sys.argv)
     
+    # Apply global styling
+    apply_global_style(app)
+
     # Initialize the main window
     main_window = MainWindow()
+    configure_main_window(main_window)
     
     # Initialize models
     person_model = PersonDA()
@@ -44,9 +50,11 @@ def main():
     person_list_view = PersonListPanel()
     person_add_view = PersonAddPanel()
     person_edit_view = PersonEditPanel()
+
     # Initialize employee views
     employee_list_view = EmployeeListPanel()
-    employee_add_edit_view = EmployeeAddPanel()
+    employee_add_view = EmployeeAddPanel()
+    employee_edit_view = EmployeeEditPanel()
     
     # Initialize department views
     department_list_view = DepartmentListPanel()
@@ -59,13 +67,14 @@ def main():
     permission_edit_view = PermissionEditPanel()
 
     # Add views to the main window's panels area stack
-    main_window_presenter.add_panel(person_list_view)
     main_window_presenter.add_panel(employee_list_view)
     main_window_presenter.add_panel(department_list_view)
     main_window_presenter.add_panel(permission_list_view)
+    main_window_presenter.add_panel(person_list_view)
     main_window_presenter.add_panel(person_add_view)
     main_window_presenter.add_panel(person_edit_view)
-    main_window_presenter.add_panel(employee_add_edit_view)
+    main_window_presenter.add_panel(employee_add_view)
+    main_window_presenter.add_panel(employee_edit_view)
     main_window_presenter.add_panel(department_add_view)
     main_window_presenter.add_panel(department_edit_view)
     main_window_presenter.add_panel(permission_add_view)
@@ -73,7 +82,7 @@ def main():
 
     # Initialize presenters
     person_presenter = PersonPresenter(person_model, person_list_view, person_add_view, person_edit_view, main_window_presenter)
-    employee_presenter = EmployeePresenter(employee_model, employee_list_view, employee_add_edit_view, main_window_presenter)
+    employee_presenter = EmployeePresenter(employee_model, department_model, permission_model, employee_list_view, employee_add_view, employee_edit_view,  main_window_presenter)
     department_presenter = DepartmentPresenter(department_model, department_list_view, department_add_view, department_edit_view, main_window_presenter)
     permission_presenter = PermissionPresenter(permission_model, permission_list_view, permission_add_view, permission_edit_view, main_window_presenter)
 

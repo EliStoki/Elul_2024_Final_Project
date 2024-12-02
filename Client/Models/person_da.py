@@ -14,11 +14,11 @@ class PersonDA:
         return Person(**person) if person else None
 
     def add(self, person : Person):
-        data = person.__dict__
+        data = person.to_dict()
         return self.api.create("person", data)
 
     def update(self, person : Person):
-        data = person.__dict__
+        data = person.to_dict()
         return self.api.update("person", person.id, data)
 
     def delete(self, person : Person):
