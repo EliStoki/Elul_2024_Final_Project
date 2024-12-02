@@ -1,6 +1,6 @@
-﻿using Server.Infrastructure;
-using System.Data;
+﻿using System.Data;
 using Server.Models;
+using Server.Models.Infrastructure;
 
 namespace Server.Models.DataAccess.Department;
 

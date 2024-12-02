@@ -1,5 +1,5 @@
-﻿using Server.Commands.Department;
-using Server.Models;
+﻿using Server.Models;
+using Server.Models.Commands.Department;
 using Server.Models.DataAccess.Department;
 
 namespace Server.Handlers.CommandHandlers;

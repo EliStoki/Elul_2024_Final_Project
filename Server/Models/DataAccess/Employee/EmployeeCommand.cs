@@ -1,8 +1,7 @@
-﻿using Server.Infrastructure;
-
-using Server.Models.DataAccess.Department;
+﻿using Server.Models.DataAccess.Department;
 using Server.Models.DataAccess.Permission;
 using Server.Models.DataAccess.Person;
+using Server.Models.Infrastructure;
 using Server.Services;
 using System.Data;
 

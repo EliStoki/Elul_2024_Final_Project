@@ -82,10 +82,10 @@ namespace Server.Controllers;
 
 
 using Microsoft.AspNetCore.Mvc;
-using Server.Commands.Employee;
 using Server.Handlers.CommandHandlers;
 using Server.Handlers.QueryHandlers;
-using Server.Queries.Employee;
+using Server.Models.Commands.Employee;
+using Server.Models.Queries.Employee;
 
 [ApiController]
 [Route("api/[controller]")]

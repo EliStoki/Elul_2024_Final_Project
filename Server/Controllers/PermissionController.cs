@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Server.Commands.Permission;
 using Server.Handlers.CommandHandlers;
 using Server.Handlers.QueryHandlers;
-using Server.Queries.Permission;
+using Server.Models.Commands.Permission;
+using Server.Models.Queries.Permission;
 
 [ApiController]
 [Route("api/[controller]")]

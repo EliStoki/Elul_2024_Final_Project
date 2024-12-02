@@ -1,7 +1,7 @@
 ﻿
 using Server.Models;
-using Server.Queries.Department;
 using Server.Models.DataAccess.Department;
+using Server.Models.Queries.Department;
 
 namespace Server.Handlers.QueryHandlers;
 

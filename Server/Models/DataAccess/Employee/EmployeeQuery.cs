@@ -1,9 +1,9 @@
 ﻿namespace Server.Models.DataAccess.Employee;
 using System.Data;
-using Server.Infrastructure;
 using Server.Models.DataAccess.Department;
 using Server.Models.DataAccess.Permission;
 using Server.Models.DataAccess.Person;
+using Server.Models.Infrastructure;
 
 public class EmployeeQuery
 {

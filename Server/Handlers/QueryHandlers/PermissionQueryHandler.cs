@@ -1,7 +1,7 @@
 ﻿
 using Server.Models;
-using Server.Queries.Permission;
 using Server.Models.DataAccess.Permission;
+using Server.Models.Queries.Permission;
 
 namespace Server.Handlers.QueryHandlers;
 

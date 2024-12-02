@@ -1,4 +1,4 @@
-﻿using Server.Infrastructure;
+﻿using Server.Models.Infrastructure;
 using System.Data;
 
 namespace Server.Models.DataAccess.Permission;

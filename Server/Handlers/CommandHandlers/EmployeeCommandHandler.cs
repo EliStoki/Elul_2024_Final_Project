@@ -1,6 +1,5 @@
-﻿using Server.Commands.Employee;
-
-using Server.Models;
+﻿using Server.Models;
+using Server.Models.Commands.Employee;
 using Server.Models.DataAccess.Employee;
 
 namespace Server.Handlers.CommandHandlers;

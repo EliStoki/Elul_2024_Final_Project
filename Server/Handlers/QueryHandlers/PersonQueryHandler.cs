@@ -1,6 +1,6 @@
 ﻿using Server.Models.DataAccess.Person;
 using Server.Models;
-using Server.Queries.Person;
+using Server.Models.Queries.Person;
 
 namespace Server.Handlers.QueryHandlers;
 

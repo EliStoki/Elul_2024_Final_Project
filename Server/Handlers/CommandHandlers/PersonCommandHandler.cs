@@ -1,6 +1,6 @@
 ﻿using Server.Models.DataAccess.Person;
 using Server.Models;
-using Server.Commands.Person;
+using Server.Models.Commands.Person;
 
 namespace Server.Handlers.CommandHandlers;
 

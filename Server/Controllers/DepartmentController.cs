@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Server.Commands.Department;
 using Server.Handlers.CommandHandlers;
 using Server.Handlers.QueryHandlers;
-using Server.Queries.Department;
-using Server.Queries;
+using Server.Models.Queries.Department;
+using Server.Models.Queries;
+using Server.Models.Commands.Department;
 
 [ApiController]
 [Route("api/[controller]")]

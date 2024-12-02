@@ -1,7 +1,7 @@
 ﻿
 using Server.Models;
-using Server.Queries.Employee;
 using Server.Models.DataAccess.Employee;
+using Server.Models.Queries.Employee;
 
 namespace Server.Handlers.QueryHandlers;
 

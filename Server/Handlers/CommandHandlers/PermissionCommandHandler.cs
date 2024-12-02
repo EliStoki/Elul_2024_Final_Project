@@ -1,6 +1,5 @@
-﻿using Server.Commands.Permission;
-
-using Server.Models;
+﻿using Server.Models;
+using Server.Models.Commands.Permission;
 using Server.Models.DataAccess.Permission;
 
 namespace Server.Handlers.CommandHandlers;

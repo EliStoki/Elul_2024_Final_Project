@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Server.Commands.Person;
 using Server.Handlers.CommandHandlers;
 using Server.Handlers.QueryHandlers;
 using Server.Models;
-using Server.Queries.Person;
+using Server.Models.Commands.Person;
+using Server.Models.Queries.Person;
 
 namespace Server.Controllers
 {
