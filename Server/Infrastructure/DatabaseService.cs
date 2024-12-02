@@ -16,7 +16,7 @@ public class DataBaseService
             _connectionString = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
-                .Build().GetConnectionString("SomeeDbConnection");
+                .Build().GetConnectionString("SomeeDbConnection")!;
 
         }
         catch (Exception ex)
@@ -42,6 +42,8 @@ public class DataBaseService
         }
         return _instance;
     }
+
+
 
     // Example method to execute a SQL query and return data
     public async Task<DataTable> ExecuteQueryAsync(string query)
