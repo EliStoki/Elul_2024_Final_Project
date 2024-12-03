@@ -14,8 +14,6 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon, QPixmap
 from models.employee import Employee
 from presenters.employee_presenter import EmployeePresenter
-import asyncio
-
 
 class EmployeeListPanel(QWidget):
     def __init__(self):
@@ -123,10 +121,11 @@ class EmployeeListPanel(QWidget):
 
         # Create action buttons for each row
         action_layout = QHBoxLayout()
-        edit_button = QPushButton()
-        edit_button.setIcon(QIcon("resources/edit icon.png"))
-        edit_button.setIconSize(edit_button.sizeHint() * 0.8)
-        edit_button.setFixedSize(30, 30)  # Set fixed size to fit the cell
+        
+        # edit_button = QPushButton()
+        # edit_button.setIcon(QIcon("resources/edit icon.png"))
+        # edit_button.setIconSize(edit_button.sizeHint() * 0.8)
+        # edit_button.setFixedSize(30, 30)  # Set fixed size to fit the cell
 
         delete_button = QPushButton()
         delete_button.setIcon(QIcon("resources/delete icon.png"))
@@ -134,17 +133,14 @@ class EmployeeListPanel(QWidget):
         delete_button.setFixedSize(30, 30)  # Set fixed size to fit the cell
 
         # Connect the buttons to the presenter
-        edit_button.clicked.connect(lambda: self.presenter.open_edit_view(employee))
-        delete_button.clicked.connect(self.delete_employee)
+        # edit_button.clicked.connect(lambda: self.presenter.open_edit_view(employee))
+        delete_button.clicked.connect(lambda: self.presenter.delete_employee(employee))
 
         # Add the buttons to the layout
-        action_layout.addWidget(edit_button)
+        # action_layout.addWidget(edit_button)
         action_layout.addWidget(delete_button)
 
         # Create a widget to hold the buttons and set it as the item for the 'Actions' column
         action_widget = QWidget()
         action_widget.setLayout(action_layout)
         self.table.setCellWidget(row_position, 6, action_widget)  # 6 is the 'Actions' column index
-
-    def delete_employee(self, employee):
-        self.presenter.delete_employee(employee)
