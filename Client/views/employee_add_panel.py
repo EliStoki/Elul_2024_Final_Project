@@ -41,7 +41,7 @@ class EmployeeAddPanel(QWidget):
 
         # Input fields with labels
         form_container = QVBoxLayout()
-        form_container.setContentsMargins(200, 0, 200, 0)
+        form_container.setContentsMargins(180, 0, 180, 0)
 
         form_layout = QFormLayout()
 
@@ -73,15 +73,19 @@ class EmployeeAddPanel(QWidget):
         self.permission_input = QComboBox()
         form_layout.addRow(self.permission_label, self.permission_input)
 
-        # Image drop box
         self.image_label = QLabel("Profile Image:")
-        self.image_input = QLabel("DDrag image here or click to select file")
-        self.image_input.setFixedSize(250, 100)
-        self.image_input.setStyleSheet("border: 2px dashed #aaa;")
-        self.image_input.setAlignment(Qt.AlignCenter)
-        self.image_input.setScaledContents(True)  # Scale the image to fit the label
-        self.image_input.mousePressEvent = self.open_file_explorer  # Open file explorer on click
-        form_layout.addRow(self.image_label, self.image_input)
+
+        # Image path input and button
+        image_path_layout = QHBoxLayout()
+        self.image_input = QLineEdit()
+        self.image_input.setPlaceholderText("Enter image path or click 'Browse'")
+        self.browse_button = QPushButton("Browse")
+        self.browse_button.clicked.connect(self.open_file_explorer)
+        image_path_layout.addWidget(self.image_input)
+        image_path_layout.addWidget(self.browse_button)
+
+    
+        form_layout.addRow(self.image_label, image_path_layout)
 
         form_container.addLayout(form_layout)
         form_container.setAlignment(Qt.AlignCenter)
@@ -128,7 +132,7 @@ class EmployeeAddPanel(QWidget):
             "Image Files (*.png *.jpg *.jpeg *.bmp *.gif)"
         )
         if file_path:
-            self.set_image(file_path)
+            self.image_input.setText(file_path)
 
     def set_image(self, file_path):
         """Display the selected or dropped image in the QLabel."""
@@ -147,6 +151,6 @@ class EmployeeAddPanel(QWidget):
         position = self.position_input.text()
         dept = self.department_input.currentData().id
         permission = self.permission_input.currentData().id
-        self.image_input.pixmap().toImage().save("temp.png")
+        file_path = self.image_input.text()
         # Include logic to save the image file path if needed
-        self.presenter.add_employee(name, age, address, position, dept, permission, "temp.png")
+        self.presenter.add_employee(name, age, address, position, dept, permission, file_path)
