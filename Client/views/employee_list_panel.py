@@ -1,4 +1,3 @@
-import requests
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -11,7 +10,7 @@ from PySide6.QtWidgets import (
     QComboBox,
 )
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QIcon, QPixmap
+from PySide6.QtGui import QIcon, QPixmap, QMovie
 from models.employee import Employee
 from presenters.employee_presenter import EmployeePresenter
 
@@ -21,8 +20,8 @@ class EmployeeListPanel(QWidget):
         self.setWindowTitle("Employees")
 
         # Main layout with margins
-        main_layout = QVBoxLayout(self)
-        main_layout.setContentsMargins(20, 20, 20, 20)
+        self.main_layout = QVBoxLayout(self)
+        self.main_layout.setContentsMargins(20, 20, 20, 20)
 
         # Top layout
         top_layout = QHBoxLayout()
@@ -62,7 +61,7 @@ class EmployeeListPanel(QWidget):
         top_layout.addLayout(button_layout)
 
         # Add the top layout to the main layout
-        main_layout.addLayout(top_layout)
+        self.main_layout.addLayout(top_layout)
 
         # Create the QTableWidget
         self.table = QTableWidget(self)
@@ -74,7 +73,18 @@ class EmployeeListPanel(QWidget):
         # remove the row numbers
         self.table.verticalHeader().setVisible(False)
 
-        main_layout.addWidget(self.table)
+        self.main_layout.addWidget(self.table)
+
+        # Create the loading label (hidden by default)
+        self.loading_label = QLabel(self)
+        self.loading_label.setAlignment(Qt.AlignCenter)
+        self.loading_label.setVisible(False)
+        self.main_layout.addWidget(self.loading_label)
+
+        # Set up the loading GIF
+        self.loading_gif = QMovie("resources/Loading_Animation.gif")  # Replace with your loading GIF path
+        self.loading_label.setMovie(self.loading_gif)
+        self.loading_gif.start()
 
     def set_presenter(self, presenter: EmployeePresenter):
         self.presenter = presenter
@@ -82,7 +92,7 @@ class EmployeeListPanel(QWidget):
     def clear(self):
         self.table.setRowCount(0)
 
-    def add_item(self, employee: Employee, dept_name):
+    def add_item(self, employee: Employee, dept_name, url_content):
         # Add a new row to the table
         row_position = self.table.rowCount()
         self.table.insertRow(row_position)
@@ -98,20 +108,16 @@ class EmployeeListPanel(QWidget):
 
         # Display employee image
         image_label = QLabel()
-        # Fetch the image from the URL
-        try:
-            response = requests.get(employee.imageUrl)
-            response.raise_for_status()  # Raise an error if the request failed
 
+        if url_content:
             # Load the image into QPixmap
             pixmap = QPixmap()
-            pixmap.loadFromData(response.content)
+            pixmap.loadFromData(url_content)
 
             # Set the pixmap to the QLabel
             image_label.setPixmap(pixmap.scaled(50, 50, Qt.KeepAspectRatio))  # Scale the image for consistent row height
-        except Exception as e:
-            print(f"Error loading image: {e}")
-            image_label.setText("Image not available")  # Fallback text if the image cannot be loaded
+        else:
+            image_label.setText("No Image")
 
         # Add the image label to the table
         self.table.setCellWidget(row_position, 0, image_label)
@@ -121,11 +127,6 @@ class EmployeeListPanel(QWidget):
 
         # Create action buttons for each row
         action_layout = QHBoxLayout()
-        
-        # edit_button = QPushButton()
-        # edit_button.setIcon(QIcon("resources/edit icon.png"))
-        # edit_button.setIconSize(edit_button.sizeHint() * 0.8)
-        # edit_button.setFixedSize(30, 30)  # Set fixed size to fit the cell
 
         delete_button = QPushButton()
         delete_button.setIcon(QIcon("resources/delete icon.png"))
@@ -133,14 +134,17 @@ class EmployeeListPanel(QWidget):
         delete_button.setFixedSize(30, 30)  # Set fixed size to fit the cell
 
         # Connect the buttons to the presenter
-        # edit_button.clicked.connect(lambda: self.presenter.open_edit_view(employee))
         delete_button.clicked.connect(lambda: self.presenter.delete_employee(employee))
 
         # Add the buttons to the layout
-        # action_layout.addWidget(edit_button)
         action_layout.addWidget(delete_button)
 
         # Create a widget to hold the buttons and set it as the item for the 'Actions' column
         action_widget = QWidget()
         action_widget.setLayout(action_layout)
         self.table.setCellWidget(row_position, 6, action_widget)  # 6 is the 'Actions' column index
+
+    def loading(self, mode: bool):
+        self.loading_label.setVisible(mode)
+        self.loading_gif.start()
+        self.table.setVisible(not mode)

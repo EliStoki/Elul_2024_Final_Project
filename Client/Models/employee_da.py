@@ -19,7 +19,10 @@ class EmployeeDA:
     def add(self, employee: Employee, file_path: str):
         # Convert the Employee object to a dictionary and add it to the database using multipart/form-data
         data = employee.to_dict()
-        files = {'file': open(file_path, 'rb')}
+        try:
+            files = {'file': open(file_path, 'rb')}
+        except:
+            files = None
         return self.api.create_multipart("employee", data, files)
 
     def update(self, employee: Employee):
