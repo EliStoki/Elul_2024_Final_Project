@@ -26,3 +26,15 @@ class Person:
             "Age": self.age,
             "Address": self.address
         }
+    
+    def update_to_dict(self):
+        """
+        Convert the person object to a dictionary.
+        :return: A dictionary containing the person's attributes
+        """
+        return {
+            "ID": self.id,
+            "Name": self.name,
+            "Age": self.age,
+            "Address": self.address
+        }

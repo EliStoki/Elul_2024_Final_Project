@@ -10,6 +10,7 @@ from PySide6.QtWidgets import (
     QSizePolicy,
 )
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QIntValidator
 
 class PersonEditPanel(QWidget):
     def __init__(self):
@@ -48,6 +49,7 @@ class PersonEditPanel(QWidget):
         self.age_label = QLabel("Age:")
         self.age_input = QLineEdit()
         self.age_input.setPlaceholderText("Enter age")
+        self.age_input.setValidator(QIntValidator())  # Only allow integers
         form_layout.addRow(self.age_label, self.age_input)
 
         self.address_label = QLabel("Address:")

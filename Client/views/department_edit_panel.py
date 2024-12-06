@@ -42,11 +42,6 @@ class DepartmentEditPanel(QWidget):
 
         form_layout = QFormLayout()
 
-        self.dept_id_label = QLabel("Department ID:")
-        self.dept_id_input = QLineEdit()
-        self.dept_id_input.setPlaceholderText("Enter department ID")
-        form_layout.addRow(self.dept_id_label, self.dept_id_input)
-
         self.dept_name_label = QLabel("Department Name:")
         self.dept_name_input = QLineEdit()
         self.dept_name_input.setPlaceholderText("Enter department name")
@@ -85,6 +80,6 @@ class DepartmentEditPanel(QWidget):
         self.dept_name_input.set
     
     def on_save_clicked(self):
-        dept_id = self.dept_id_input.text()
+        dept_id = 0
         dept_name = self.dept_name_input.text()
         self.presenter.update_department(dept_id, dept_name)

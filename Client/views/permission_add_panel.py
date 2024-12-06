@@ -10,6 +10,7 @@ from PySide6.QtWidgets import (
     QSizePolicy,
 )
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QIntValidator
 from presenters.permission_presenter import PermissionPresenter
 
 class PermissionAddPanel(QWidget):
@@ -39,14 +40,10 @@ class PermissionAddPanel(QWidget):
 
         form_layout = QFormLayout()
 
-        self.id_label = QLabel("Permission ID:")
-        self.id_input = QLineEdit()
-        self.id_input.setPlaceholderText("Enter permission ID")
-        form_layout.addRow(self.id_label, self.id_input)
-
         self.floor_level_label = QLabel("Floor Level:")
         self.floor_level_input = QLineEdit()
         self.floor_level_input.setPlaceholderText("Enter floor level")
+        self.floor_level_input.setValidator(QIntValidator())  # Only allow integers
         form_layout.addRow(self.floor_level_label, self.floor_level_input)
 
         self.building_label = QLabel("Building:")
@@ -82,7 +79,7 @@ class PermissionAddPanel(QWidget):
         self.presenter = presenter
 
     def on_save_clicked(self):
-        id = self.id_input.text()
+        id = 0
         floor_level = self.floor_level_input.text()
         building = self.building_input.text()
         self.presenter.add_permission(id, floor_level, building)

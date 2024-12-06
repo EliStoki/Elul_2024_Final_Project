@@ -21,9 +21,11 @@ class PersonPresenter:
 
     def load_data(self):
         """Load data into the list view."""
+        self.main_window_presenter.set_status_bar_text("Loading persons...")
         self.list_view.clear()
         for person in self.model.get_all():
             self.list_view.add_item(person)
+        self.main_window_presenter.set_status_bar_text("Persons loaded successfully.")
 
     def open_add_view(self):
         """Prepare and display the Add View."""
@@ -70,8 +72,10 @@ class PersonPresenter:
 
     def delete_person(self, person):
         """Delete the selected person."""
-        self.model.delete(person)
-        self.load_data()
+        if self.model.delete(person):
+            self.load_data()
+        else:
+            self.main_window_presenter.set_status_bar_text(f"Person {person.name} is in use and cannot be deleted.")
 
     def open_list_view(self):
         """Display the list view."""

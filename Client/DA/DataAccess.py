@@ -14,6 +14,10 @@ class DataAccess:
         response = requests.post(url, json=data)
         if response.status_code == 201:
             return response.json()
+        elif response.status_code == 200:
+            return response.text.split()[-1]
+        elif response.status_code == 500:
+            return None
         else:
             response.raise_for_status()
 
@@ -50,8 +54,10 @@ class DataAccess:
         url = f"{self.base_url}/{endpoint}/{resource_id}"
         print("Deleting data from:", url)  # For debugging
         response = requests.delete(url)
-        if response.status_code == 204:  # No content after deletion
+        if response.status_code == 200:  # No content after deletion
             return {"message": "Resource deleted successfully"}
+        elif response.status_code == 404:
+            return None
         else:
             response.raise_for_status()
 
@@ -62,5 +68,8 @@ class DataAccess:
         response = requests.post(url, data=data, files=files)
         if response.status_code == 201:
             return response.json()
+        elif response.status_code == 500:
+            print("No face detected in the image.")
+            return -2
         else:
             response.raise_for_status()

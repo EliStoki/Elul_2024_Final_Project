@@ -10,6 +10,7 @@ from PySide6.QtWidgets import (
     QSizePolicy,
 )
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QIntValidator
 from presenters.person_presenter import PersonPresenter
 
 class PersonAddPanel(QWidget):
@@ -39,11 +40,6 @@ class PersonAddPanel(QWidget):
 
         form_layout = QFormLayout()
 
-        self.id_label = QLabel("ID:")
-        self.id_input = QLineEdit()
-        self.id_input.setPlaceholderText("Enter person ID")
-        form_layout.addRow(self.id_label, self.id_input)
-
         self.name_label = QLabel("Name:")
         self.name_input = QLineEdit()
         self.name_input.setPlaceholderText("Enter name")
@@ -52,6 +48,7 @@ class PersonAddPanel(QWidget):
         self.age_label = QLabel("Age:")
         self.age_input = QLineEdit()
         self.age_input.setPlaceholderText("Enter age")
+        self.age_input.setValidator(QIntValidator())  # Only allow integers
         form_layout.addRow(self.age_label, self.age_input)
 
         self.address_label = QLabel("Address:")
@@ -87,7 +84,7 @@ class PersonAddPanel(QWidget):
         self.presenter = presenter
 
     def on_save_clicked(self):
-        id = self.id_input.text()
+        id = 0
         name = self.name_input.text()
         age = self.age_input.text()
         address = self.address_input.text()

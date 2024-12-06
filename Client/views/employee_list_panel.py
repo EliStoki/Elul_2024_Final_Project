@@ -56,6 +56,12 @@ class EmployeeListPanel(QWidget):
         button_layout.addWidget(self.add_button)
         self.add_button.clicked.connect(lambda: self.presenter.open_add_view())
 
+        # button to refresh the table
+        self.refresh_button = QPushButton("Refresh")
+        self.refresh_button.setFixedHeight(30)  # Set button size
+        button_layout.addWidget(self.refresh_button)
+        self.refresh_button.clicked.connect(lambda: self.presenter.load_data())  # Refresh the table
+
         # Add layouts to the top layout
         top_layout.addLayout(search_layout)
         top_layout.addLayout(button_layout)

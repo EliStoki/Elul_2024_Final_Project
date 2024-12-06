@@ -64,7 +64,19 @@ class DataAccessWorker(QObject):
         
         elif self.operation == 'add_employee':
             employee, image_path = self.args
-            self.employee_model.add(employee, image_path)
+            status = self.employee_model.add(employee, image_path)
+            if status == -1:
+                print("File not found. from worker")
+                self.error.emit("File not found.")
+                self.employee_operation_complete.emit()
+                self.finished.emit()
+                return
+            elif status == -2:
+                print("No face detected in the image. from worker")
+                self.error.emit("No face detected in the image.")
+                self.employee_operation_complete.emit()
+                self.finished.emit()
+                return
             self.operation = 'get_all_employees'
             self.run()
         

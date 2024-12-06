@@ -10,6 +10,7 @@ from PySide6.QtWidgets import (
     QSizePolicy,
 )
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QIntValidator
 
 class PermissionEditPanel(QWidget):
     def __init__(self):
@@ -43,6 +44,7 @@ class PermissionEditPanel(QWidget):
         self.floor_level_label = QLabel("Floor Level:")
         self.floor_level_input = QLineEdit()
         self.floor_level_input.setPlaceholderText("Enter floor level")
+        self.floor_level_input.setValidator(QIntValidator())  # Only allow integers
         form_layout.addRow(self.floor_level_label, self.floor_level_input)
 
         self.building_label = QLabel("Building:")

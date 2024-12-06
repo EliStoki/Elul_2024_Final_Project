@@ -12,7 +12,7 @@ from PySide6.QtWidgets import (
     QFileDialog
 )
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QPixmap, QDragEnterEvent, QDropEvent
+from PySide6.QtGui import QPixmap, QDragEnterEvent, QDropEvent, QIntValidator
 
 
 class EmployeeAddPanel(QWidget):
@@ -53,6 +53,8 @@ class EmployeeAddPanel(QWidget):
         self.age_label = QLabel("Age:")
         self.age_input = QLineEdit()
         self.age_input.setPlaceholderText("Enter age")
+        # allow only numbers
+        self.age_input.setValidator(QIntValidator())
         form_layout.addRow(self.age_label, self.age_input)
 
         self.address_label = QLabel("Address:")

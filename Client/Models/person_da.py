@@ -18,7 +18,7 @@ class PersonDA:
         return self.api.create("person", data)
 
     def update(self, person : Person):
-        data = person.to_dict()
+        data = person.update_to_dict()
         return self.api.update("person", person.id, data)
 
     def delete(self, person : Person):

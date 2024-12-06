@@ -22,7 +22,8 @@ class EmployeeDA:
         try:
             files = {'file': open(file_path, 'rb')}
         except:
-            files = None
+            print("File not found.")
+            return -1
         return self.api.create_multipart("employee", data, files)
 
     def update(self, employee: Employee):

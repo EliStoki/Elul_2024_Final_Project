@@ -1,6 +1,5 @@
 from PySide6.QtWidgets import QWidget
 from PySide6.QtCore import QThread
-from presenters.update_worker import UpdateWorker
 
 class MainWindowPresenter:
     def __init__(self, main_view):
@@ -35,7 +34,6 @@ class MainWindowPresenter:
 
     def run_update_worker(self):
         self.thread = QThread()
-        self.update_worker = UpdateWorker(self.main_view.main_area)
         self.update_worker.moveToThread(self.thread)
         self.thread.started.connect(self.update_worker.run)
         self.update_worker.finished.connect(self.thread.quit)

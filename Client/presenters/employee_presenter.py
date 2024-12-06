@@ -58,6 +58,8 @@ class EmployeePresenter:
         self.add_view.set_presenter(self)
         self.edit_view.set_presenter(self)
 
+        self.status_text = "Loading data..."
+
         # Load initial data
         self.load_data()
 
@@ -82,17 +84,16 @@ class EmployeePresenter:
 
         :param error_message: Detailed error message
         """
-        QMessageBox.critical(
-            self.list_view, 
-            "Database Error", 
-            f"An error occurred during database operation:\n{error_message}"
-        )
+        print(f"{error_message} from error handler")
+        self.status_text = f"{error_message}"
 
     def load_data(self):
         """Load employees asynchronously with departments."""
         self.list_view.clear()
         self.list_view.loading(True)
+        self.main_window_presenter.set_status_bar_text("Loading Employees...")
         self._start_database_operation('get_all_employees')
+        self.status_text = "Employees loaded successfully."
 
     def _on_employees_retrieved(self, employees):
         """
@@ -105,6 +106,7 @@ class EmployeePresenter:
             # Retrieve department name asynchronously
             self.list_view.add_item(employee[0], employee[1], employee[2])
         self.list_view.loading(False)
+        self.main_window_presenter.set_status_bar_text(self.status_text)
 
     def _on_department_and_permissions_retrieved(self, departments_and_permissions):
         """
@@ -125,6 +127,7 @@ class EmployeePresenter:
     def _on_employee_operation_complete(self):
         """Refresh the list view after a database operation."""                
         self.list_view.loading(False)
+        self.main_window_presenter.set_status_bar_text(self.status_text)
 
         if not self.next_to_run.empty():
             operation, args = self.next_to_run.get()
@@ -185,7 +188,11 @@ class EmployeePresenter:
                 imageUrl="",
                 permission=int(permission)
             )
+            self.list_view.loading(True)
+            self.main_window_presenter.set_status_bar_text(f"Adding {name}...")
+            self.main_window_presenter.load_panel(self.list_view)
             self._start_database_operation('add_employee', (employee, image_path))
+            self.status_text = f"Employee {name} added successfully."
         except ValueError as e:
             QMessageBox.warning(
                 self.add_view, 
@@ -223,6 +230,7 @@ class EmployeePresenter:
                 age=employee.age
             )
             self._start_database_operation('update_employee', updated_employee)
+            self.main_window_presenter.set_status_bar_text(f"Employee {name} updated successfully.")
         except ValueError as e:
             QMessageBox.warning(
                 self.edit_view, 
@@ -243,7 +251,9 @@ class EmployeePresenter:
         :param employee: Employee to be deleted
         """
         self.list_view.loading(True)
+        self.main_window_presenter.set_status_bar_text(f"Deliting  {employee.name}...")
         self._start_database_operation('delete_employee', employee)
+        self.status_text = f"Employee {employee.name} deleted successfully."
 
     def open_list_view(self):
         """Display the list view."""

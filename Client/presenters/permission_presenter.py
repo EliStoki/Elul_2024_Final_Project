@@ -19,12 +19,13 @@ class PermissionPresenter:
         self.load_data()
 
     def load_data(self):
+        self.main_window_presenter.set_status_bar_text("Loading permissions...")
         self.list_view.clear()
         for permission in self.model.get_all():
             self.list_view.add_item(permission)
+        self.main_window_presenter.set_status_bar_text("Permissions loaded successfully.")
 
     def open_add_view(self):
-        self.add_view.id_input.clear()
         self.add_view.floor_level_input.clear()
         self.add_view.building_input.clear()
         self.main_window_presenter.load_panel(self.add_view)
@@ -38,19 +39,24 @@ class PermissionPresenter:
 
     def add_permission(self, id, floor_level, building):
         permission = Permission(id=id, floorLevel=floor_level, building=building)
-        self.model.add(permission)
+        response = self.model.add(permission)
         self.load_data()
         self.main_window_presenter.load_panel(self.list_view)
+        self.main_window_presenter.set_status_bar_text(f"Permission {response} added successfully.")
 
     def update_permission(self, id, floor_level, building):
         permission = Permission(id=id, floorLevel=floor_level, building=building)
         self.model.update(permission)
         self.load_data()
         self.main_window_presenter.load_panel(self.list_view)
+        self.main_window_presenter.set_status_bar_text(f"Permission {id} updated successfully.")
 
     def delete_permission(self, permission):
-        self.model.delete(permission)
-        self.load_data()
+        if self.model.delete(permission):
+            self.load_data()
+            self.main_window_presenter.set_status_bar_text(f"Permission {permission.id} deleted successfully.")
+        else:
+            self.main_window_presenter.set_status_bar_text(f"Permission {permission.id} is in use and cannot be deleted.")
 
     def open_list_view(self):
         self.main_window_presenter.load_panel(self.list_view)
